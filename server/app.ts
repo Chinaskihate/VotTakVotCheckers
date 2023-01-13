@@ -1,7 +1,8 @@
 import {Server} from "socket.io";
 import {Multiplayer} from "./multiplayer/multiplayer";
 import {MultiplayerImplementation} from "./multiplayer/multiplayerImplementation";
-import {Checker} from "./figures/checker";
+import {MoveServerEvent} from "./contract/events/serverToClient/moveServerEvent";
+import {EventName} from "./contract/events/eventName";
 
 const io = new Server(5000,{ });
 const multi4socket = io.of('/multiplayer4')
@@ -9,12 +10,13 @@ const multi3socket = io.of('/multiplayer3')
 const multiplayer: Multiplayer = new MultiplayerImplementation(io);
 
 multi4socket.on('connection', (socket) => {
-    socket.on('register', (name: string) => {
+    socket.on(EventName.REGISTRATION, (name: string) => {
         multiplayer.addNewPlayer(name, socket.id);
-    })
+        console.log(EventName.START);
+    });
 
-    socket.on('move', (board: Checker[][]) => {
-        multiplayer.getGame().doMove(board);
+    socket.on(EventName.MOVE, (moveEvent: MoveServerEvent) => {
+        multiplayer.getGame().doMove(moveEvent.board);
         multi4socket.to(multiplayer.getGame().getGameId())
             .emit('update', )
     });
@@ -26,5 +28,11 @@ multi4socket.on('connection', (socket) => {
             multiplayer.getAllPlayers().removeBySocketId(socket.id);
         }
     });
+
+    // dev only
+    socket.on('SHUTDOWN', () => {
+        throw new Error();
+    });
+
 });
 

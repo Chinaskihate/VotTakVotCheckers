@@ -1,4 +1,4 @@
-import {Color} from "../figures/checker";
+import {Color} from "../contract/models/figures/checker";
 
 export class ColorPicker {
     private readonly colors: Color[] = [Color.BLACK, Color.GREEN, Color.RED, Color.WHITE]

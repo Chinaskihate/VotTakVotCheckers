@@ -1,11 +1,11 @@
 import {Multiplayer} from "./multiplayer";
 import {PlayersQueue} from "../utils/playersQueue";
-import {Game} from "../game_components/game";
-import {User} from "../game_components/user";
 import {ColorPicker} from "../utils/colorPicker";
-import {Board} from "../game_components/board";
 import {DefaultEventsMap} from "socket.io/dist/typed-events";
 import {Server} from "socket.io";
+import {Game} from "../contract/models/game_components/game";
+import {User} from "../contract/models/game_components/user";
+import {Board} from "../contract/models/game_components/board";
 
 export class MultiplayerImplementation implements Multiplayer {
     readonly io: Server<DefaultEventsMap,DefaultEventsMap>;

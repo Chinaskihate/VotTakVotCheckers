@@ -2,8 +2,8 @@ import {Color} from "../figures/checker";
 
 export class User {
     private readonly socketId: string;
-    private gameId: string;
-    private color: Color;
+    private gameId: string | null;
+    private color: Color | null;
     private readonly name: string;
 
     public getName() {

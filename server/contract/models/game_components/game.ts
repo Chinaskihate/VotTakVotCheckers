@@ -2,6 +2,8 @@ import {Board} from "./board";
 import {User} from "./user";
 import {Checker, Color} from "../figures/checker";
 
+export const MAX_SIZE = 6;
+
 export class Game {
     private readonly gameId: string;
     private readonly players: User[];
