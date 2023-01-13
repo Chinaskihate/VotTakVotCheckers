@@ -1,9 +1,14 @@
-import {Server} from "socket.io";
-const config = require('../../../config/config.json');
+import {io} from "socket.io-client";
+//import {EventName} from "../../../contract/events/eventName";
+//const config = require('../../../config/config.json');
 
 export class SocketClient {
-    private io = new Server(config['PORT']);
+    //private socket = io(config['PORT']);
 
     constructor() {
+    }
+
+    public register(name: string) {
+        alert('123')
     }
 }
