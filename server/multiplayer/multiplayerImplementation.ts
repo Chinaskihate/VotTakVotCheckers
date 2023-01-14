@@ -29,7 +29,7 @@ export class MultiplayerImplementation implements Multiplayer {
         return this.game;
     }
 
-    startGame(): void {
+    startGame() {
         console.log('trying to start game')
         if (this.game == null) {
             let players: User[] = [];
@@ -38,10 +38,10 @@ export class MultiplayerImplementation implements Multiplayer {
             }
             let gameId: string = Math.random().toString(5);
             let colorPicker: ColorPicker = new ColorPicker();
-            players.map(player => {
+            players.map((player) => {
                 player.setGameId(gameId);
                 player.setColor(colorPicker.pickRandomColor());
-                this.io.sockets.sockets.get(player.getSocketId()).join(gameId);
+                this.io.of('/multiplayer4').sockets.get(player.getSocketId()).join(gameId);
             })
 
             this.game = new Game(players, 1, new Board(), gameId);
