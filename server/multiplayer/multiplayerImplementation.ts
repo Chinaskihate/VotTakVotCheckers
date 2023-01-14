@@ -18,6 +18,7 @@ export class MultiplayerImplementation implements Multiplayer {
 
     constructor(io: Server<DefaultEventsMap,DefaultEventsMap>) {
         this.io = io;
+        this.playersQueue = new PlayersQueue();
     }
 
     getAllPlayers(): PlayersQueue {
@@ -29,12 +30,12 @@ export class MultiplayerImplementation implements Multiplayer {
     }
 
     startGame(): void {
+        console.log('trying to start game')
         if (this.game == null) {
             let players: User[] = [];
             for (let i = 0; i < 4; i++) {
                 players.push(this.playersQueue.dequeue());
             }
-
             let gameId: string = Math.random().toString(5);
             let colorPicker: ColorPicker = new ColorPicker();
             players.map(player => {

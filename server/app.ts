@@ -3,6 +3,7 @@ import {Multiplayer} from "./multiplayer/multiplayer";
 import {MultiplayerImplementation} from "./multiplayer/multiplayerImplementation";
 import {MoveServerEvent} from "./contract/events/serverToClient/moveServerEvent";
 import {EventName} from "./contract/events/eventName";
+import { RegistrationClientEvent } from "./contract/events/clientToServer/registrationClientEvent";
 
 const io = new Server(5000,{ });
 const multi4socket = io.of('/multiplayer4')
@@ -10,9 +11,9 @@ const multiplayer: Multiplayer = new MultiplayerImplementation(io);
 
 multi4socket.on('connection', (socket) => {
     console.log('connection handled; socketId: ' + socket.id);
-    socket.on(EventName.REGISTRATION, (name: string) => {
-        multiplayer.addNewPlayer(name, socket.id);
-        console.log('player registered; name: ' + name + '; socketId: ' + socket.id);
+    socket.on(EventName.REGISTRATION, (event: RegistrationClientEvent) => {
+        multiplayer.addNewPlayer(event.name, socket.id);
+        console.log('player registered; name: ' + event.name + '; socketId: ' + socket.id);
     });
 
     socket.on(EventName.MOVE, (moveEvent: MoveServerEvent) => {
@@ -31,6 +32,10 @@ multi4socket.on('connection', (socket) => {
         } else {
             multiplayer.getAllPlayers().removeBySocketId(socket.id);
         }
+    });
+
+    socket.on("connect_error", (err) => {
+        console.log(`connect_error due to ${err.message}`);
     });
 
     // dev only

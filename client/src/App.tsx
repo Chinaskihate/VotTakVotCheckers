@@ -21,6 +21,9 @@ const App = () => {
     return (
         <div className="app">
             <RegistrationComponent/>
+            <RegistrationComponent/>
+            <RegistrationComponent/>
+            <RegistrationComponent/>
             <BoardComponent
                 board={board}
                 setBoard={setBoard}/>
