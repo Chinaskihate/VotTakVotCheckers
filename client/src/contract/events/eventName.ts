@@ -1,6 +1,6 @@
 export enum EventName {
-    "START",
-    "END",
-    "MOVE",
-    "REGISTRATION"
+    START = "START",
+    END = "END",
+    MOVE = "MOVE",
+    REGISTRATION = "REGISTRATION"
 }

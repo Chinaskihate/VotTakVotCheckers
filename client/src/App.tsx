@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
 import "./App.css"
-import BoardComponent from "./components/BoardComponent";
+import BoardComponent from "./components/game/BoardComponent";
+import RegistrationComponent from "./components/RegistrationComponent";
 import {Board} from "./models/Board";
-import {SocketClient} from './utils/socketClient';
 
 const App = () => {
     const [board, setBoard] = useState(new Board());
-    const client = new SocketClient();
-    client.register('test');
 
     useEffect(() => {
         restart();
@@ -22,6 +20,7 @@ const App = () => {
 
     return (
         <div className="app">
+            <RegistrationComponent/>
             <BoardComponent
                 board={board}
                 setBoard={setBoard}/>
