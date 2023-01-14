@@ -5,15 +5,21 @@ import { StartGameServerEvent } from "../contract/events/serverToClient/startGam
 const config = require('../config/config.json');
 
 export class SocketClient {
-    private socket = io(config["serverUrl"]);
+    private socket = io(config["serverUrl"], {transports: ['websocket']});
 
     constructor() {
+        this.socket.onAny((event, ...args) => {
+            console.log(`got ${event}`);
+        });
+        this.socket.on("connect_error", (err) => {
+            console.log(`connect_error due to ${err.message}`);
+        });
     }
 
     public register(name: string) {
-        console.log(config["serverUrl"]);
+        console.log('trying to connect: ' + JSON.stringify(new RegistrationClientEvent(name)));
         this.socket.emit(EventName.REGISTRATION,
-            new RegistrationClientEvent(name)
+            JSON.stringify(new RegistrationClientEvent(name))
         );
     }
 
