@@ -39,6 +39,29 @@ export class Game {
         this.switchCurrentColor();
     }
 
+    public checkWin(): boolean {
+        this.players.map(x => {
+            x.setIsLooser(this.checkIsColorLost(x.getColor()));
+        });
+
+        return this.players.filter(x => !x.getIsLooser()).length == 1;
+    }
+
+    public findWinner(): User {
+        return this.players.find(x => !x.getIsLooser());
+    }
+
+    private checkIsColorLost(color: Color): boolean {
+        this.getBoard().getPosition().map(x => {
+            x.map(y => {
+                if (y.color == color) {
+                    return false;
+                }
+            })
+        });
+        return true;
+    }
+
     private switchCurrentColor(): void {
         this.currentColor = (this.currentColor + 1) % 4;
     }

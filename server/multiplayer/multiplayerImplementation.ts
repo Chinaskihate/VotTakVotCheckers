@@ -6,6 +6,10 @@ import {Server} from "socket.io";
 import {Game} from "../contract/models/game_components/game";
 import {User} from "../contract/models/game_components/user";
 import {Board} from "../contract/models/game_components/board";
+import {EventName} from "../contract/events/eventName";
+import {StartGameServerEvent} from "../contract/events/serverToClient/startGameServerEvent";
+import {EndGameServerEvent, GameResultStatus} from "../contract/events/serverToClient/endGameServerEvent";
+import {Checker} from "../contract/models/figures/checker";
 
 export class MultiplayerImplementation implements Multiplayer {
     readonly io: Server<DefaultEventsMap,DefaultEventsMap>;
@@ -41,8 +45,11 @@ export class MultiplayerImplementation implements Multiplayer {
 
             this.game = new Game(players, 1, new Board(), gameId);
 
-            this.io.to(gameId).emit('game started');
+            this.io.to(gameId).emit(EventName.START, new StartGameServerEvent(
+                this.game.getBoard().getPosition(), this.game.getCurrentMove())
+            );
         }
+        console.log('game started: ' + this.game);
     }
 
     addNewPlayer(name: string, socketId: string): void {
@@ -52,5 +59,26 @@ export class MultiplayerImplementation implements Multiplayer {
                 this.startGame();
             }
         }
+        console.log('player ' + name + ' ' + socketId + ' added');
+    }
+
+    private checkEnd(): void {
+        if (this.game.checkWin()) {
+            this.io.emit(EventName.END, new EndGameServerEvent(
+                this.game.getGameId(),
+                GameResultStatus.ENDED,
+                this.getGame().findWinner())
+            );
+        }
+        console.log('game ended');
+
+        if (this.playersQueue.length > 3) {
+            this.startGame();
+        }
+    }
+
+    doMove(board: Checker[][]): void {
+        this.getGame().doMove(board);
+        this.checkEnd();
     }
 }
