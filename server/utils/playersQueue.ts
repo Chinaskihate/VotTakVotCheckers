@@ -1,4 +1,4 @@
-import {User} from "../game_components/user";
+import {User} from "../contract/models/game_components/user";
 
 export class PlayersQueue {
     private players: User[] = [];

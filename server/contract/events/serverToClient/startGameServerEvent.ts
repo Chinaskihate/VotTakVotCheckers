@@ -1,14 +1,13 @@
-import {Checker, Color} from "../../../server/figures/checker";
+import {Checker, Color} from "../../models/figures/checker";
 import {GameEvent} from "../gameEvent";
 import {EventName} from "../eventName";
 
 export class StartGameServerEvent extends GameEvent {
-    eventName = EventName.START;
     board: Checker[][];
     startColor: Color;
 
     constructor(board: Checker[][], startColor: Color) {
-        super();
+        super(EventName.START);
         this.board = board;
         this.startColor = startColor;
     }

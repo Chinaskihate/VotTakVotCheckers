@@ -1,7 +1,7 @@
 import {PlayersQueue} from "../utils/playersQueue";
-import {Game} from "../game_components/game";
 import {Server} from "socket.io";
 import {DefaultEventsMap} from "socket.io/dist/typed-events";
+import {Game} from "../contract/models/game_components/game";
 
 export interface Multiplayer {
     readonly io: Server<DefaultEventsMap,DefaultEventsMap>;
