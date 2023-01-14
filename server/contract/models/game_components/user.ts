@@ -4,6 +4,7 @@ export class User {
     private readonly socketId: string;
     private gameId: string | null;
     private color: Color | null;
+    private isLoser: boolean = false;
     private readonly name: string;
 
     public getName() {
@@ -24,6 +25,14 @@ export class User {
 
     public setColor(color: Color): void {
         this.color = color;
+    }
+
+    public getIsLooser() {
+        return this.isLoser;
+    }
+
+    public setIsLooser(isLooser: boolean) {
+        this.isLoser = isLooser;
     }
 
     constructor(name: string, socketId: string) {

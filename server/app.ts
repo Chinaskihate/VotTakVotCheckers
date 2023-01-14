@@ -6,19 +6,23 @@ import {EventName} from "./contract/events/eventName";
 
 const io = new Server(5000,{ });
 const multi4socket = io.of('/multiplayer4')
-const multi3socket = io.of('/multiplayer3')
 const multiplayer: Multiplayer = new MultiplayerImplementation(io);
 
 multi4socket.on('connection', (socket) => {
+    console.log('connection handled; socketId: ' + socket.id);
     socket.on(EventName.REGISTRATION, (name: string) => {
         multiplayer.addNewPlayer(name, socket.id);
-        console.log(EventName.START);
+        console.log('player registered; name: ' + name + '; socketId: ' + socket.id);
     });
 
     socket.on(EventName.MOVE, (moveEvent: MoveServerEvent) => {
-        multiplayer.getGame().doMove(moveEvent.board);
+        console.log('move handled');
+        multiplayer.doMove(moveEvent.board);
         multi4socket.to(multiplayer.getGame().getGameId())
-            .emit('update', )
+            .emit(EventName.MOVE, new MoveServerEvent(
+                multiplayer.getGame().getBoard().getPosition(), multiplayer.getGame().getCurrentMove())
+            );
+        console.log('move done');
     });
 
     socket.on('disconnect', () => {
