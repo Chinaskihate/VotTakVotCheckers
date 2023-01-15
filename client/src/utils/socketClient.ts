@@ -5,6 +5,8 @@ import { StartGameServerEvent } from "../contract/events/serverToClient/startGam
 import { EndGameServerEvent } from "../contract/events/serverToClient/endGameServerEvent";
 import { Board } from "../contract/models/game_components/board";
 import { User } from "../contract/models/game_components/user";
+import { MoveClientEvent } from "../contract/events/clientToServer/moveClientEvent";
+import { Checker, Color } from "../contract/models/figures/checker";
 const config = require('../config/config.json');
 
 export class SocketClient {
@@ -28,6 +30,11 @@ export class SocketClient {
         this.socket.emit(EventName.REGISTRATION,
             JSON.stringify(new RegistrationClientEvent(name))
         );
+    }
+
+    public move(board: (Checker | null)[][], nextMoveColor: Color) {
+        this.socket.emit(EventName.MOVE,
+            JSON.stringify(new MoveClientEvent(board, nextMoveColor, this.socket.id)))
     }
 
     public onStart(callback: (e: StartGameServerEvent) => void) {

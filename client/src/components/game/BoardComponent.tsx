@@ -34,7 +34,6 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
     }, [selectedSell]);
 
     function highlightCells() {
-        board.highlightCells(selectedSell);
         for (let i = 0; i < serverBoard!.getPosition().length; i++) {
             for (let j = 0; j < serverBoard!.getPosition()[0].length; j++) {
                 const serverCell = serverBoard!.getCell(new Coordinates(i, j));
@@ -48,6 +47,7 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
                 }
             }
         }
+        board.highlightCells(selectedSell);
         updateBoard()
     }
 

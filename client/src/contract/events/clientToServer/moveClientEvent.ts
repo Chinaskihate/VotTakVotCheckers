@@ -4,14 +4,13 @@ import {EventName} from "../eventName";
 import {ClientEvent} from './clientEvent';
 import {User} from "../../models/game_components/user";
 
-export class moveClientEvent extends ClientEvent {
-    board: Checker[][];
+export class MoveClientEvent extends ClientEvent {
+    board: (Checker | null)[][];
     nextMoveColor: Color;
 
-    constructor(board: Checker[][], nextMoveColor: Color, user: User) {
-        super(user, EventName.MOVE);
+    constructor(board: (Checker | null)[][], nextMoveColor: Color, socketId: string) {
+        super(socketId, EventName.MOVE);
         this.board = board;
         this.nextMoveColor = nextMoveColor;
-        this.user = user;
     }
 }
