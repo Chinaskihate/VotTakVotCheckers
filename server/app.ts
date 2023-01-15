@@ -13,11 +13,6 @@ const multiplayer: Multiplayer = new MultiplayerImplementation(io);
 
 multi4socket.on('connection', (socket) => {
     console.log('connection handled; socketId: ' + socket.id);
-    multiplayer.addNewPlayer('name1', '1');
-    multiplayer.addNewPlayer('name2', '2');
-    multiplayer.addNewPlayer('name3', '3');
-    multiplayer.addNewPlayer('name4', '4');
-    multiplayer.startGame();
     socket.on(EventName.REGISTRATION, (data) => {
         try {
             const event = new RegistrationClientEvent(data.name === undefined ? JSON.parse(data).name : data.name)

@@ -1,11 +1,12 @@
-import { Color } from "../../contract/models/figures/checker";
+import { Board } from "../../contract/models/game_components/board";
+import { Colors } from "../../models/Colors";
 
 export class GameStatus {
-    gameStarted: boolean;
-    playerColor: Color | null;
+    board: Board | null;
+    currentMove: Colors | null;
 
-    constructor(gameStarted: boolean, playerColor: Color | null) {
-        this.gameStarted = gameStarted;
-        this.playerColor = playerColor;
+    constructor(board: Board | null, currentMove: Colors | null) {
+        this.board = board;
+        this.currentMove = currentMove;
     }
 }

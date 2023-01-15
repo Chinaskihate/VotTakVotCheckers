@@ -1,15 +1,16 @@
 import { GameActionTypes } from "../action-types";
 import { GameAction } from "../actions/GameAction";
-import { GameStatus } from "../models/GameStatus";
+import { GameStarts } from "../models/GameStarts";
 
-const initialState = new GameStatus(false, null);
+const initialState = new GameStarts(false, null);
 
-export const gameReducer = (state: GameStatus = initialState, action: GameAction) => {
+export const gameReducer = (state: GameStarts = initialState, action: GameAction) => {
     switch (action.type) {
         case GameActionTypes.START:
-            return new GameStatus(true, action.payload);
+            alert(action.payload);
+            return new GameStarts(true, action.payload);
         case GameActionTypes.END:
-            return new GameStatus(false, null);
+            return new GameStarts(false, null);
         default:
             return state;
     }
