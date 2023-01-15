@@ -1,16 +1,29 @@
-import React, { useEffect } from 'react';
+import React, {FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { StartGameServerEvent } from '../contract/events/serverToClient/startGameServerEvent';
 import { actionCreators, RootState } from '../store';
 import { SocketClient } from '../utils/socketClient';
 
-const RegistrationComponent = () => {
+interface RegistrationProps {
+    socketClient: SocketClient;
+}
+
+const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
     const dispatch = useDispatch();
 
     const { depositMoney, withdrawMoney, bankrupt } = bindActionCreators(actionCreators, dispatch);
     const amount = useSelector((state: RootState) => state.bank);
-    const client = new SocketClient();
-    client.register(String('Test 1'));
+
+    socketClient.onStart((e: StartGameServerEvent) => {
+        console.log('123');
+        console.log(e);
+        return;
+    });
+
+    const register = (amount: number) => {
+        socketClient.register(JSON.stringify(amount));
+    }
 
     return (
         <div>
@@ -18,6 +31,7 @@ const RegistrationComponent = () => {
             <button onClick={() => depositMoney(1000)}>Deposit</button>
             <button onClick={() => withdrawMoney(500)}>Withdraw</button>
             <button onClick={() => bankrupt()}>Bankrupt</button>
+            <button onClick={() => register(amount)}>Register</button>
         </div>
     );
 };

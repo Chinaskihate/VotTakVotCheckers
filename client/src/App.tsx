@@ -3,6 +3,9 @@ import "./App.css"
 import BoardComponent from "./components/game/BoardComponent";
 import RegistrationComponent from "./components/RegistrationComponent";
 import {Board} from "./models/Board";
+import { SocketClient } from "./utils/socketClient";
+
+const socketClient = new SocketClient();
 
 const App = () => {
     const [board, setBoard] = useState(new Board());
@@ -20,7 +23,7 @@ const App = () => {
 
     return (
         <div className="app">
-            <RegistrationComponent/>
+            <RegistrationComponent socketClient={socketClient}/>
             <BoardComponent
                 board={board}
                 setBoard={setBoard}/>

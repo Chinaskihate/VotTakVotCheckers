@@ -25,7 +25,7 @@ export class SocketClient {
 
     public onStart(callback: (e: StartGameServerEvent) => void) {
         this.socket.on(EventName.START, (...args) => {
-            const data = JSON.parse(args[0]);
+            const data = args[0];
             const event = new StartGameServerEvent(data.board, data.startColor);
             callback(event);
         });

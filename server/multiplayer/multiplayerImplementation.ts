@@ -46,7 +46,7 @@ export class MultiplayerImplementation implements Multiplayer {
 
             this.game = new Game(players, 1, new Board(), gameId);
 
-            this.io.to(gameId).emit(EventName.START, new StartGameServerEvent(
+            this.io.of('/multiplayer4').to(gameId).emit(EventName.START, new StartGameServerEvent(
                 this.game.getBoard().getPosition(), this.game.getCurrentMove())
             );
         }
@@ -55,12 +55,12 @@ export class MultiplayerImplementation implements Multiplayer {
 
     addNewPlayer(name: string, socketId: string): void {
         this.playersQueue.enqueue(new User(name, socketId));
+        console.log('player ' + name + ' ' + socketId + ' added');
         if (this.playersQueue.length > 3) {
             if (this.game == null) {
                 this.startGame();
             }
         }
-        console.log('player ' + name + ' ' + socketId + ' added');
     }
 
     private checkEnd(): void {
