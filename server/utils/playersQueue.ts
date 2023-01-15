@@ -2,23 +2,25 @@ import {User} from "../contract/models/game_components/user";
 
 export class PlayersQueue {
     private players: User[] = [];
-    private head: number;
-    private tail: number;
+    private currCount: number;
 
     constructor() {
-        this.head = null;
-        this.tail = null;
+        this.currCount = 0;
     }
 
     enqueue(element): void {
-        this.players[this.tail] = element;
-        this.tail++;
+        if (this.players.filter(x => x.getSocketId() == element.getSocketId()).length == 0) {
+            this.players[this.currCount] = element;
+            ++this.currCount;
+        } else {
+            console.log('player with this ID is already registered.');
+        }
     }
 
     dequeue(): User {
-        const item = this.players[this.head];
-        delete this.players[this.head];
-        this.head++;
+        const item = this.players[this.currCount - 1];
+        this.players.slice(this.currCount - 1, this.currCount);
+        --this.currCount;
         return item;
     }
 
@@ -26,20 +28,22 @@ export class PlayersQueue {
         if (this.players.length == 0) {
             return false;
         }
-        this.players.slice(this.players.findIndex(x => x.getSocketId() == socketId), 1);
+        const idx = this.players.findIndex(x => x.getSocketId() == socketId);
+        this.players.slice(idx, idx + 1);
+        --this.currCount;
         return true;
     }
 
     peek(): User {
-        return this.players[this.head];
+        return this.players[this.currCount - 1];
     }
 
     get length(): number {
-        return this.tail - this.head;
+        return this.currCount;
     }
 
     get isEmpty(): boolean {
-        return this.length === 0;
+        return this.currCount === 0;
     }
 
     public contains(socketId: string): boolean {
@@ -49,5 +53,9 @@ export class PlayersQueue {
             }
         });
         return false;
+    }
+
+    asArray(): User[] {
+        return this.players;
     }
 }

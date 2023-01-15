@@ -5,6 +5,7 @@ import {MoveServerEvent} from "./contract/events/serverToClient/moveServerEvent"
 import {EventName} from "./contract/events/eventName";
 import {RegistrationClientEvent} from "./contract/events/clientToServer/registrationClientEvent";
 import {EndGameServerEvent, GameResultStatus} from "./contract/events/serverToClient/endGameServerEvent";
+import {User} from "./contract/models/game_components/user";
 
 const io = new Server(5000,{ });
 const multi4socket = io.of('/multiplayer4')
@@ -12,35 +13,52 @@ const multiplayer: Multiplayer = new MultiplayerImplementation(io);
 
 multi4socket.on('connection', (socket) => {
     console.log('connection handled; socketId: ' + socket.id);
+    multiplayer.addNewPlayer('name1', '1');
+    multiplayer.addNewPlayer('name2', '2');
+    multiplayer.addNewPlayer('name3', '3');
+    multiplayer.addNewPlayer('name4', '4');
+    multiplayer.startGame();
     socket.on(EventName.REGISTRATION, (data) => {
-        const event = new RegistrationClientEvent(data.name === undefined ? JSON.parse(data).name : data.name)
-        multiplayer.addNewPlayer(event.name, socket.id);
-        console.log('player registered; name: ' + event.name + '; socketId: ' + socket.id);
+        try {
+            const event = new RegistrationClientEvent(data.name === undefined ? JSON.parse(data).name : data.name)
+            multiplayer.addNewPlayer(event.name, socket.id);
+            console.log('player registered; name: ' + event.name + '; socketId: ' + socket.id);
+        } catch (e: any) {
+            console.log('SERVER ERROR: ' + e.message)
+        }
     });
 
     socket.on(EventName.MOVE, (moveEvent: MoveServerEvent) => {
-        console.log('move handled');
-        multiplayer.doMove(moveEvent.board);
-        multi4socket.to(multiplayer.getGame().getGameId())
-            .emit(EventName.MOVE, new MoveServerEvent(
-                multiplayer.getGame().getBoard().getPosition(),
-                multiplayer.getGame().getCurrentMove(),
-                multiplayer.getGame().getPlayers()
-                )
-            );
-        console.log('move done');
+        try {
+            console.log('move handled');
+            multiplayer.doMove(moveEvent.board);
+            multi4socket.to(multiplayer.getGame().getGameId())
+                .emit(EventName.MOVE, new MoveServerEvent(
+                        multiplayer.getGame().getBoard().getPosition(),
+                        multiplayer.getGame().getCurrentMove(),
+                        multiplayer.getGame().getPlayers()
+                    )
+                );
+            console.log('move done');
+        } catch (e) {
+            console.log('SERVER ERROR: ' + e.message)
+        }
     });
 
     socket.on('disconnect', () => {
-        if (!multiplayer.getAllPlayers().contains(socket.id)) {
-            multiplayer.getAllPlayers().removeBySocketId(socket.id);
-        } else {
-            io.of('/multiplayer4').to(multiplayer.getGame().getGameId())
-                .emit(EventName.END, new EndGameServerEvent(
-                    multiplayer.getGame().getGameId(),
-                    GameResultStatus.ABORTED,
-                    null
-                ));
+        try {
+            if (!multiplayer.getAllPlayers().contains(socket.id)) {
+                multiplayer.getAllPlayers().removeBySocketId(socket.id);
+            } else {
+                io.of('/multiplayer4').to(multiplayer.getGame().getGameId())
+                    .emit(EventName.END, new EndGameServerEvent(
+                        multiplayer.getGame().getGameId(),
+                        GameResultStatus.ABORTED,
+                        null
+                    ));
+            }
+        } catch (e) {
+            console.log('SERVER ERROR: ' + e.message)
         }
     });
 
@@ -50,7 +68,20 @@ multi4socket.on('connection', (socket) => {
 
     // dev only
     socket.on('SHUTDOWN', () => {
-        throw new Error();
+        // multiplayer.getAllPlayers().enqueue(new User('1', '2'));
+        // multiplayer.getAllPlayers().enqueue(new User('2', '3'));
+        // multiplayer.getAllPlayers().enqueue(new User('3', '1'));
+        //
+        // multiplayer.getAllPlayers().removeBySocketId('1');
+        //
+        // multiplayer.getAllPlayers().enqueue(new User('5', '4'));
+        // multiplayer.getAllPlayers().enqueue(new User('5', '4'));
+        //
+        // console.log(multiplayer.getAllPlayers().asArray());
+        //
+        // console.log(multiplayer.getAllPlayers().dequeue());
+        // console.log(multiplayer.getAllPlayers().dequeue());
+        throw new Error('SHUTDOWN');
     });
 
 });
