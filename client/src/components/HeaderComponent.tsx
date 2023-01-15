@@ -24,9 +24,9 @@ const HeaderComponent = () => {
                     hidden={!gameStatus.gameStarted}
                 >
                     <div style={{padding: 20}}>
-                        Color:
+                        Your Color:
                         <div
-                            style={{width: 40, height: 10}}
+                            style={{width: 70, height: 10}}
                             className={
                                 gameStatus.playerColor === Color.BLACK
                                     ? 'black'
@@ -35,6 +35,27 @@ const HeaderComponent = () => {
                                         : gameStatus.playerColor === Color.GREEN
                                             ? 'green'
                                             : gameStatus.playerColor === Color.WHITE
+                                                ? 'white'
+                                                : ''}
+                        />
+                    </div>
+                </div>
+                <div
+                    className="username"
+                    hidden={!gameStatus.gameStarted}
+                >
+                    <div style={{padding: 20}}>
+                        Current Move Color:
+                        <div
+                            style={{width: 130, height: 10}}
+                            className={
+                                gameStatus.currentMove === Color.BLACK
+                                    ? 'black'
+                                    : gameStatus.currentMove === Color.RED
+                                        ? 'red'
+                                        : gameStatus.currentMove === Color.GREEN
+                                            ? 'green'
+                                            : gameStatus.currentMove === Color.WHITE
                                                 ? 'white'
                                                 : ''}
                         />

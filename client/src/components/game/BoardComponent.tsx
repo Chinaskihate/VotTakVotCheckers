@@ -24,7 +24,7 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
         if (selectedSell && selectedSell !== cell && selectedSell.figure?.canMove(cell)) {
             selectedSell.moveFigure(cell);
             setSelectedSell(null);
-        } else if (cell.figure && compareColors(cell!.figure!.color, gameStatus!.playerColor!)) {
+        } else if (cell.figure && compareColors(cell!.figure!.color, gameStatus!.playerColor!) && gameStatus!.playerColor === gameStatus!.currentMove) {
             setSelectedSell(cell);
         }
     }
