@@ -22,7 +22,10 @@ multi4socket.on('connection', (socket) => {
         multiplayer.doMove(moveEvent.board);
         multi4socket.to(multiplayer.getGame().getGameId())
             .emit(EventName.MOVE, new MoveServerEvent(
-                multiplayer.getGame().getBoard().getPosition(), multiplayer.getGame().getCurrentMove())
+                multiplayer.getGame().getBoard().getPosition(),
+                multiplayer.getGame().getCurrentMove(),
+                multiplayer.getGame().getPlayers()
+                )
             );
         console.log('move done');
     });

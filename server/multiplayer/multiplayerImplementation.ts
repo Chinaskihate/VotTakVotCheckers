@@ -47,7 +47,7 @@ export class MultiplayerImplementation implements Multiplayer {
             this.game = new Game(players, 1, new Board(), gameId);
 
             this.io.of('/multiplayer4').to(gameId).emit(EventName.START, new StartGameServerEvent(
-                this.game.getBoard().getPosition(), this.game.getCurrentMove())
+                this.game.getBoard().getPosition(), this.game.getCurrentMove(), this.getGame().getPlayers())
             );
         }
         console.log('game started: ' + this.game);
