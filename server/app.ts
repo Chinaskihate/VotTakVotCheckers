@@ -4,8 +4,6 @@ import {MultiplayerImplementation} from "./multiplayer/multiplayerImplementation
 import {MoveServerEvent} from "./contract/events/serverToClient/moveServerEvent";
 import {EventName} from "./contract/events/eventName";
 import {RegistrationClientEvent} from "./contract/events/clientToServer/registrationClientEvent";
-import {EndGameServerEvent, GameResultStatus} from "./contract/events/serverToClient/endGameServerEvent";
-import {User} from "./contract/models/game_components/user";
 
 const io = new Server(5000,{ });
 const multi4socket = io.of('/multiplayer4')
@@ -18,7 +16,6 @@ multi4socket.on('connection', (socket) => {
         try {
             const event = new RegistrationClientEvent(data.name === undefined ? JSON.parse(data).name : data.name)
             multiplayer.addNewPlayer(event.name, socket.id);
-            console.log('player registered; name: ' + event.name + '; socketId: ' + socket.id);
         } catch (e: any) {
             console.log('SERVER ERROR: ' + e.message)
         }
@@ -43,17 +40,12 @@ multi4socket.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         try {
-            if (!multiplayer.getAllPlayers().contains(socket.id)) {
-                multiplayer.getAllPlayers().removeBySocketId(socket.id);
-                console.log('Disconnected - removed from queue; SocketID: ' + socket.id);
+            if (multiplayer.getGame() != null &&
+                multiplayer.getGame().getPlayers().find(x => x.getSocketId() == socket.id) != undefined) {
+                multiplayer.abortGame();
             } else {
-                io.of('/multiplayer4').to(multiplayer.getGame().getGameId())
-                    .emit(EventName.END, new EndGameServerEvent(
-                        multiplayer.getGame().getGameId(),
-                        GameResultStatus.ABORTED,
-                        null
-                    ));
-                console.log('Disconnected - Game aborted');
+                // TODO Пофиксить
+                multiplayer.getAllPlayers().removeBySocketId(socket.id);
             }
         } catch (e) {
             console.log('SERVER ERROR: ' + e.message)

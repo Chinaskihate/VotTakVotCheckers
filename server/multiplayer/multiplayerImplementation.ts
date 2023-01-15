@@ -55,7 +55,7 @@ export class MultiplayerImplementation implements Multiplayer {
 
     addNewPlayer(name: string, socketId: string): void {
         this.playersQueue.enqueue(new User(name, socketId));
-        console.log('player ' + name + ' ' + socketId + ' added');
+        console.log('player ' + name + ' ' + socketId + ' registered');
         if (this.playersQueue.length > 3) {
             if (this.game == null) {
                 this.startGame();
@@ -81,5 +81,16 @@ export class MultiplayerImplementation implements Multiplayer {
     doMove(board: Checker[][]): void {
         this.getGame().doMove(board);
         this.checkEnd();
+    }
+
+    abortGame(): void {
+        this.io.of('/multiplayer4').to(this.getGame().getGameId())
+            .emit(EventName.END, new EndGameServerEvent(
+                this.getGame().getGameId(),
+                GameResultStatus.ABORTED,
+                null
+            ));
+        this.game = null;
+        console.log('Disconnected - Game aborted');
     }
 }
