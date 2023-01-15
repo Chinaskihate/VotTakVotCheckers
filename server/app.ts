@@ -4,6 +4,7 @@ import {MultiplayerImplementation} from "./multiplayer/multiplayerImplementation
 import {MoveServerEvent} from "./contract/events/serverToClient/moveServerEvent";
 import {EventName} from "./contract/events/eventName";
 import {RegistrationClientEvent} from "./contract/events/clientToServer/registrationClientEvent";
+import {MoveClientEvent} from "./contract/events/clientToServer/moveClientEvent";
 
 const io = new Server(5000,{ });
 const multi4socket = io.of('/multiplayer4')
@@ -21,7 +22,7 @@ multi4socket.on('connection', (socket) => {
         }
     });
 
-    socket.on(EventName.MOVE, (moveEvent: MoveServerEvent) => {
+    socket.on(EventName.MOVE, (moveEvent: MoveClientEvent) => {
         try {
             console.log('move handled');
             multiplayer.doMove(moveEvent.board);
