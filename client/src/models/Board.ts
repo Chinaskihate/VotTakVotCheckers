@@ -1,5 +1,5 @@
 import {Cell} from "./Cell";
-import {Colors} from "./Colors";
+import {CellColors, Colors} from "./Colors";
 import { Checker } from "./figures/Checker";
 
 export class Board {
@@ -9,7 +9,7 @@ export class Board {
         for (let i = 0; i < 6; i++) {
             const row: Cell[] = []
             for (let j = 0; j < 6; j++) {
-                row.push(new Cell(this, j, i, Colors.BLACK, null)) // black
+                row.push(new Cell(this, j, i, CellColors.BLACK, null)) // black
             }
             this.cells.push(row);
         }

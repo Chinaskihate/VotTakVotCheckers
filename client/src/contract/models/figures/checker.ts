@@ -9,7 +9,7 @@ export class Checker {
     color: Color | null;
     isQueen: boolean;
 
-    constructor(color?: Color, isQueen?: boolean, data?: any) {
+    constructor(data?: any, color?: Color, isQueen?: boolean) {
         if (color) {
             this.color = color;
             this.isQueen = isQueen!;

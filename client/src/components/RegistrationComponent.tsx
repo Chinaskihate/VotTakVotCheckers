@@ -27,11 +27,12 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
     const amount = useSelector((state: RootState) => state.bank);
 
     socketClient.onStart((e: StartGameServerEvent) => {
-        const firstPlayer = e.players.at(0) as User;
-        // console.log(firstPlayer);
-        // console.log(typeof firstPlayer);
-        // console.log(e.players.filter(p => p.getSocketId() === socketClient.getSocketId()));
-        // startGame((e.players.find(p => p.getSocketId() == socketClient.getSocketId()) as User).getColor() as Color);
+        const firstPlayer = e.players[0];
+        console.log((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())))
+        console.log((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]))
+        console.log((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]).getColor())
+        console.log((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]).getColor() as Color)
+        startGame((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]).getColor() as Color);
         return;
     });
 

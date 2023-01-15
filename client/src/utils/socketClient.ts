@@ -35,8 +35,6 @@ export class SocketClient {
             const users = args.players.map((p: any) => new User(p))
             const board = new Board(args.board);
             const event = new StartGameServerEvent(args.board, args.startColor, users);
-            console.log(event.board);
-            console.log(event.players);
             callback(event);
         });
     }
