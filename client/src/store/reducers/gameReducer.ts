@@ -7,7 +7,7 @@ const initialState = new GameStarts(false, null);
 export const gameReducer = (state: GameStarts = initialState, action: GameAction) => {
     switch (action.type) {
         case GameActionTypes.START:
-            alert(action.payload);
+            console.log(action.payload)
             return new GameStarts(true, action.payload);
         case GameActionTypes.END:
             return new GameStarts(false, null);

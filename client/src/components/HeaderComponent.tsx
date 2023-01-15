@@ -12,21 +12,33 @@ const HeaderComponent = () => {
             <div className="header">
                 <div className="game-name">Checkers</div>
                 <div
-                    className={[
-                        "username",
-                        gameStatus.playerColor === Color.BLACK
-                            ? 'black'
-                            : gameStatus.playerColor === Color.RED
-                                ? 'red'
-                                : gameStatus.playerColor === Color.GREEN
-                                    ? 'green'
-                                    : gameStatus.playerColor === Color.WHITE
-                                        ? 'white'
-                                        : ''
-                    ].join(' ')}
+                    className="username"
                     hidden={!gameStatus.gameStarted}
                 >
-                    Username: {username}
+                    <div>
+                        Username: {username}
+                    </div>
+                </div>
+                <div
+                    className="username"
+                    hidden={!gameStatus.gameStarted}
+                >
+                    <div style={{padding: 20}}>
+                        Color:
+                        <div
+                            style={{width: 40, height: 10}}
+                            className={
+                                gameStatus.playerColor === Color.BLACK
+                                    ? 'black'
+                                    : gameStatus.playerColor === Color.RED
+                                        ? 'red'
+                                        : gameStatus.playerColor === Color.GREEN
+                                            ? 'green'
+                                            : gameStatus.playerColor === Color.WHITE
+                                                ? 'white'
+                                                : ''}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
