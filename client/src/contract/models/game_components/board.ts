@@ -13,7 +13,7 @@ export class Board {
         return JSON.parse(JSON.stringify(this));
     }
 
-    public getCell(coord: Coordinates) {
+    public getCell(coord: Coordinates): Checker | null {
         return this.position[coord.getX()][coord.getY()];
     }
 
@@ -30,7 +30,7 @@ export class Board {
             this.fillNormally();
         } else {
             for (let i = 0; i < data.length; i++) {
-                this.position.push(new Array<Checker>(MAX_SIZE));
+                this.position.push(new Array<Checker>());
                 for (let j = 0; j < data[0].length; j++) {
                     this.position[i].push(data[i][j] ? new Checker(data[i][j]) : null);
                 }

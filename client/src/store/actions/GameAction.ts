@@ -1,9 +1,14 @@
 import { Color } from "../../contract/models/figures/checker";
+import { Board } from "../../contract/models/game_components/board";
 import { GameActionTypes } from "../action-types";
 
 interface StartAction {
     type: GameActionTypes.START,
-    payload: Color
+    payload: {
+        playerColor: Color,
+        currentMove: Color,
+        board: Board
+    }
 }
 
 interface EndAction {

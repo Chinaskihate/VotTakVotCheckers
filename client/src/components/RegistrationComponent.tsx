@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {StartGameServerEvent} from '../contract/events/serverToClient/startGameServerEvent';
 import { Color } from '../contract/models/figures/checker';
+import { Board } from '../contract/models/game_components/board';
 import { User } from '../contract/models/game_components/user';
 import {actionCreators, RootState} from '../store';
 import {SocketClient} from '../utils/socketClient';
@@ -27,12 +28,8 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
     const amount = useSelector((state: RootState) => state.bank);
 
     socketClient.onStart((e: StartGameServerEvent) => {
-        const firstPlayer = e.players[0];
-        console.log((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())))
-        console.log((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]))
-        console.log((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]).getColor())
-        console.log((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]).getColor() as Color)
-        startGame((e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]).getColor() as Color);
+        const thisPlayer = (e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]);
+        startGame(thisPlayer.getColor()!, new Board(e.board), e.startColor);
         return;
     });
 

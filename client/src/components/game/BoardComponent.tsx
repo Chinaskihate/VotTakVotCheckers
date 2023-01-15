@@ -1,21 +1,30 @@
 import React, {FC, useEffect, useState} from "react";
-import {Board} from "../../models/Board";
-import {Cell} from "../../models/Cell";
+import {useSelector} from "react-redux";
+import {Coordinates} from "../../contract/models/game_components/coordinates";
+import {BoardUI} from "../../models/BoardUI";
+import {CellUI} from "../../models/CellUI";
+import {castContractColor, CellColors, compareColors} from "../../models/Colors";
+import { Checker } from "../../models/figures/Checker";
+import { Queen } from "../../models/figures/Queen";
+import {RootState} from "../../store";
 import CellComponent from "./CellComponent";
 
 interface BoardProps {
-    board: Board;
-    setBoard: (board: Board) => void;
+    board: BoardUI;
+    setBoard: (board: BoardUI) => void;
 }
 
 const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
-    const [selectedSell, setSelectedSell] = useState<Cell | null>(null);
+    const [selectedSell, setSelectedSell] = useState<CellUI | null>(null);
+    const gameStatus = useSelector((state: RootState) => state.game);
+    const serverBoard = gameStatus.board;
 
-    function click(cell: Cell) {
+    function click(cell: CellUI) {
+        console.log(cell)
         if (selectedSell && selectedSell !== cell && selectedSell.figure?.canMove(cell)) {
-             selectedSell.moveFigure(cell);
-             setSelectedSell(null);
-        } else {
+            selectedSell.moveFigure(cell);
+            setSelectedSell(null);
+        } else if (cell.figure && compareColors(cell!.figure!.color, gameStatus!.playerColor!)) {
             setSelectedSell(cell);
         }
     }
@@ -26,6 +35,19 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
 
     function highlightCells() {
         board.highlightCells(selectedSell);
+        for (let i = 0; i < serverBoard!.getPosition().length; i++) {
+            for (let j = 0; j < serverBoard!.getPosition()[0].length; j++) {
+                const serverCell = serverBoard!.getCell(new Coordinates(i, j));
+                board.cells[j][i] = new CellUI(board, j, i, CellColors.BLACK, null);
+                if (serverCell) {
+                    if (serverCell!.isQueen) {
+                        board.cells[j][i].figure = new Queen(castContractColor(serverCell!.color!), board.cells[j][i]);
+                    } else {
+                        board.cells[j][i].figure = new Checker(castContractColor(serverCell!.color!), board.cells[j][i]);
+                    }
+                }
+            }
+        }
         updateBoard()
     }
 

@@ -1,5 +1,5 @@
-import {Cell} from "../Cell";
-import {Colors} from "../Colors";
+import {CellUI} from "../CellUI";
+import {ColorUI} from "../Colors";
 import {Figure, FigureNames} from "./Figure";
 import blackLogo from '../../assets/checker-black.png';
 import greenLogo from '../../assets/checker-green.png';
@@ -7,19 +7,19 @@ import redLogo from '../../assets/checker-red.png';
 import whiteLogo from '../../assets/checker-white.png';
 
 export class Checker extends Figure {
-    constructor(color: Colors, cell: Cell) {
+    constructor(color: ColorUI, cell: CellUI) {
         super(color, cell);
-        this.logo = color === Colors.BLACK
+        this.logo = color === ColorUI.BLACK
             ? blackLogo
-            : (color === Colors.GREEN
+            : (color === ColorUI.GREEN
                 ? greenLogo
-                : (color === Colors.RED
+                : (color === ColorUI.RED
                     ? redLogo
                     : whiteLogo));
         this.name = FigureNames.CHECKER;
     }
 
-    canMove(target: Cell): boolean {
+    canMove(target: CellUI): boolean {
         if(!super.canMove(target)) {
             return false;
         }

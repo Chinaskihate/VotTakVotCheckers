@@ -1,6 +1,6 @@
-import { Colors } from "../Colors";
+import { ColorUI } from "../Colors";
 import logo from '../../assets/checker-black.png';
-import { Cell } from "../Cell";
+import { CellUI } from "../CellUI";
 
 export enum FigureNames {
     FIGURE = 'Figure',
@@ -9,13 +9,13 @@ export enum FigureNames {
 }
 
 export class Figure {
-    color: Colors;
+    color: ColorUI;
     logo: typeof logo | null;
-    cell: Cell;
+    cell: CellUI;
     name: FigureNames;
     id: number;
     
-    constructor(color: Colors, cell: Cell) {
+    constructor(color: ColorUI, cell: CellUI) {
         this.color = color;
         this.cell = cell;
         this.cell.figure = this;
@@ -24,12 +24,12 @@ export class Figure {
         this.id = Math.random();
     }
 
-    canMove(target: Cell) : boolean {
+    canMove(target: CellUI) : boolean {
         if(target.figure?.color == this.color) {
             return false;
         }
         return true;
     }
 
-    moveFigure(target: Cell) {}
+    moveFigure(target: CellUI) {}
 }

@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import { Color } from "../../contract/models/figures/checker";
+import { Board } from "../../contract/models/game_components/board";
 import { BankActionTypes, GameActionTypes, UsernameActionTypes } from "../action-types";
 import { BankAction } from "../actions/BankActions";
 import { GameAction } from "../actions/GameAction";
@@ -32,11 +33,15 @@ export const bankrupt = () => {
     }
 }
 
-export const startGame = (color: Color) => {
+export const startGame = (playerColor: Color, board: Board, currentMove: Color) => {
     return (dispatch: Dispatch<GameAction>) => {
         dispatch({
             type: GameActionTypes.START,
-            payload: color
+            payload: {
+                playerColor: playerColor,
+                board: board,
+                currentMove: currentMove
+            }
         })
     }
 }
