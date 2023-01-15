@@ -13,6 +13,7 @@ const multiplayer: Multiplayer = new MultiplayerImplementation(io);
 
 multi4socket.on('connection', (socket) => {
     console.log('connection handled; socketId: ' + socket.id);
+
     socket.on(EventName.REGISTRATION, (data) => {
         try {
             const event = new RegistrationClientEvent(data.name === undefined ? JSON.parse(data).name : data.name)
@@ -44,6 +45,7 @@ multi4socket.on('connection', (socket) => {
         try {
             if (!multiplayer.getAllPlayers().contains(socket.id)) {
                 multiplayer.getAllPlayers().removeBySocketId(socket.id);
+                console.log('Disconnected - removed from queue; SocketID: ' + socket.id);
             } else {
                 io.of('/multiplayer4').to(multiplayer.getGame().getGameId())
                     .emit(EventName.END, new EndGameServerEvent(
@@ -51,6 +53,7 @@ multi4socket.on('connection', (socket) => {
                         GameResultStatus.ABORTED,
                         null
                     ));
+                console.log('Disconnected - Game aborted');
             }
         } catch (e) {
             console.log('SERVER ERROR: ' + e.message)
