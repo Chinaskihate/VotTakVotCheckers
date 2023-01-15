@@ -7,8 +7,14 @@ export enum Color {
 
 export class Checker {
     color: Color;
+    isQueen: boolean;
 
-    constructor(color: Color) {
+    public setIsQueen(isQueen: boolean) {
+        this.isQueen = isQueen;
+    }
+
+    constructor(color: Color, isQueen: boolean) {
         this.color = color;
+        this.isQueen = isQueen;
     }
 }
