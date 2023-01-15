@@ -2,6 +2,7 @@ import {io} from "socket.io-client";
 import {EventName} from "../contract/events/eventName";
 import {RegistrationClientEvent} from '../contract/events/clientToServer/registrationClientEvent';
 import { StartGameServerEvent } from "../contract/events/serverToClient/startGameServerEvent";
+import { EndGameServerEvent } from "../contract/events/serverToClient/endGameServerEvent";
 const config = require('../config/config.json');
 
 export class SocketClient {
@@ -26,8 +27,16 @@ export class SocketClient {
     public onStart(callback: (e: StartGameServerEvent) => void) {
         this.socket.on(EventName.START, (...args) => {
             const data = args[0];
-            const event = new StartGameServerEvent(data.board, data.startColor);
+            const event = new StartGameServerEvent(data.board, data.startColor, data.players);
             callback(event);
         });
+    }
+
+    public onEnd(callback: (e: EndGameServerEvent) => void) {
+        this.socket.on(EventName.END, (...args) => {
+            const data = args[0];
+            const event = new EndGameServerEvent(data.gameId, data.status, data.winner);
+            callback(event);
+        })
     }
 }

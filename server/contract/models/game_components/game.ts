@@ -41,7 +41,9 @@ export class Game {
 
     public checkWin(): boolean {
         this.players.map(x => {
-            x.setIsLooser(this.checkIsColorLost(x.getColor()));
+            if (x.getColor()) {
+                x.setIsLooser(this.checkIsColorLost(x!.getColor()));
+            }
         });
 
         return this.players.filter(x => !x.getIsLooser()).length == 1;

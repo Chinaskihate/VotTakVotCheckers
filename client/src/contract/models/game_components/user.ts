@@ -2,8 +2,9 @@ import {Color} from "../figures/checker";
 
 export class User {
     private readonly socketId: string;
-    private gameId: string;
-    private color: Color;
+    private gameId: string | null;
+    private color: Color | null;
+    private isLoser: boolean = false;
     private readonly name: string;
 
     public getName() {
@@ -26,10 +27,18 @@ export class User {
         this.color = color;
     }
 
-    constructor(name: string, socketId: string, gameId: string, color: Color) {
+    public getIsLooser() {
+        return this.isLoser;
+    }
+
+    public setIsLooser(isLooser: boolean) {
+        this.isLoser = isLooser;
+    }
+
+    constructor(name: string, socketId: string, color: Color | null, gameId: string | null) {
         this.name = name;
         this.socketId = socketId;
-        this.gameId = gameId;
         this.color = color;
+        this.gameId = gameId;
     }
 }

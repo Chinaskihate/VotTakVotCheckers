@@ -41,20 +41,20 @@ export class Game {
 
     public checkWin(): boolean {
         this.players.map(x => {
-            x.setIsLooser(this.checkIsColorLost(x.getColor()));
+            x.setIsLooser(this.checkIsColorLost(x.getColor() as Color));
         });
 
         return this.players.filter(x => !x.getIsLooser()).length == 1;
     }
 
     public findWinner(): User {
-        return this.players.find(x => !x.getIsLooser());
+        return this.players.find(x => !x.getIsLooser()) as User;
     }
 
     private checkIsColorLost(color: Color): boolean {
         this.getBoard().getPosition().map(x => {
             x.map(y => {
-                if (y.color == color) {
+                if (y?.color == color) {
                     return false;
                 }
             })

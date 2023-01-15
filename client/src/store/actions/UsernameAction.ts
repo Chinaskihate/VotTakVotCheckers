@@ -1,7 +1,8 @@
 import { UsernameActionTypes } from "../action-types";
 
 interface SetAction {
-    type: UsernameActionTypes.SET
+    type: UsernameActionTypes.SET,
+    payload?: string;
 }
 
 interface ClearAction {

@@ -3,6 +3,49 @@
   padding: 0;
 }
 
+.header {
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  background-color: grey;
+  justify-content: center;
+  align-items: center;
+}
+
+.registration-page {
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+}
+
+.registration {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wait {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wait-hidden {
+  visibility: hidden;
+}
+
+.game-name {
+  width: 100vw;
+}
+
+.user-name {
+  width: 100vw;
+}
+
 .app {
   width: 100vw;
   height: 100vh;
