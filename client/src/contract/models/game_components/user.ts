@@ -35,10 +35,17 @@ export class User {
         this.isLoser = isLooser;
     }
 
-    constructor(name: string, socketId: string, color: Color | null, gameId: string | null) {
-        this.name = name;
-        this.socketId = socketId;
-        this.color = color;
-        this.gameId = gameId;
+    constructor(data?: any, name?: string, socketId?: string, color?: Color | null, gameId?: string | null) {
+        if (name) {
+            this.name = name;
+            this.socketId = socketId!;
+            this.color = color!;
+            this.gameId = gameId!;
+        } else {
+            this.name = data.name;
+            this.socketId = data.socketId;
+            this.color = data.color;
+            this.gameId = data.gameId;
+        }
     }
 }

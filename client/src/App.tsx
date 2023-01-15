@@ -12,7 +12,7 @@ export const socketClient = new SocketClient();
 
 const App = () => {
     const dispatch = useDispatch();
-    const isGameStarted = useSelector((state: RootState) => state.game);
+    const gameStatus = useSelector((state: RootState) => state.game);
     const [board, setBoard] = useState(new Board());
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const App = () => {
         <div>
             <HeaderComponent/>
             <div className="app">
-                {isGameStarted
+                {gameStatus.gameStarted
                     ? <BoardComponent
                         board={board}
                         setBoard={setBoard}/>

@@ -1,17 +1,16 @@
 import { Checker } from "../models/figures/checker";
-import { Queen } from "../models/figures/queen";
 import { Board } from "../models/game_components/board";
 import { Coordinates } from "../models/game_components/coordinates";
 import { MoveResult } from "./MoveResult";
 
 export class QueenLogic {
     static getQueenMoveResult(board: Board, from: Coordinates, to: Coordinates): MoveResult {
-        const queen = board.getCell(from) as Queen;
+        const queen = board.getCell(from) as Checker;
         const toCell = board.getCell(to);
         if (from.getX() == to.getX() && from.getY() == to.getY()) {
             return MoveResult.MOVE_DONE;
         }
-        if (!queen || toCell) {
+        if (!queen || toCell || !queen.isQueen) {
             return MoveResult.ABORTED;
         }
 
@@ -63,7 +62,7 @@ export class QueenLogic {
 
     private static tryMoveOnEat(board: Board, from: Coordinates, to: Coordinates): boolean {
         if (this.canEat(board, from, to)) {
-            const queen = board.getCell(from) as Queen;
+            const queen = board.getCell(from) as Checker;
             if (from.getX() === to.getX()) {
                 const isUp = from.getY() < to.getY();
                 for (let i = from.getY(); isUp ? i <= to.getY() : i >= to.getY(); isUp ? i++ : i--) {
@@ -87,7 +86,7 @@ export class QueenLogic {
     }
 
     private static canEat(board: Board, from: Coordinates, to: Coordinates): boolean {
-        const queen = board.getCell(from) as Queen;
+        const queen = board.getCell(from) as Checker;
         if (board.getCell(to) || !queen) {
             return false;
         }

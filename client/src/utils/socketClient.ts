@@ -3,6 +3,8 @@ import {EventName} from "../contract/events/eventName";
 import {RegistrationClientEvent} from '../contract/events/clientToServer/registrationClientEvent';
 import { StartGameServerEvent } from "../contract/events/serverToClient/startGameServerEvent";
 import { EndGameServerEvent } from "../contract/events/serverToClient/endGameServerEvent";
+import { Board } from "../contract/models/game_components/board";
+import { User } from "../contract/models/game_components/user";
 const config = require('../config/config.json');
 
 export class SocketClient {
@@ -17,6 +19,10 @@ export class SocketClient {
         });
     }
 
+    public getSocketId(): string {
+        return this.socket.id;
+    }
+
     public register(name: string) {
         console.log('trying to connect: ' + JSON.stringify(new RegistrationClientEvent(name)));
         this.socket.emit(EventName.REGISTRATION,
@@ -25,9 +31,12 @@ export class SocketClient {
     }
 
     public onStart(callback: (e: StartGameServerEvent) => void) {
-        this.socket.on(EventName.START, (...args) => {
-            const data = args[0];
-            const event = new StartGameServerEvent(data.board, data.startColor, data.players);
+        this.socket.on(EventName.START, (args) => {
+            const users = args.players.map((p: any) => new User(p))
+            const board = new Board(args.board);
+            const event = new StartGameServerEvent(args.board, args.startColor, users);
+            console.log(event.board);
+            console.log(event.players);
             callback(event);
         });
     }

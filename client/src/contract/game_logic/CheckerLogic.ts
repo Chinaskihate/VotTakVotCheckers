@@ -1,5 +1,4 @@
 import {Checker, Color} from "../models/figures/checker";
-import {Queen} from "../models/figures/queen";
 import {Board} from "../models/game_components/board";
 import {Coordinates} from "../models/game_components/coordinates";
 import { MoveResult } from "./MoveResult";
@@ -12,7 +11,7 @@ export class CheckerLogic {
         if (from.getX() == to.getX() && from.getY() == to.getY()) {
             return MoveResult.MOVE_DONE;
         }
-        if (!checker || toCell) {
+        if (!checker || toCell || checker.isQueen) {
             return MoveResult.ABORTED;
         }
 
