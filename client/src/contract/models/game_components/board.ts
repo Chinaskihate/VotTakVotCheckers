@@ -1,5 +1,4 @@
 import {Checker, Color} from "../figures/checker";
-import { Queen } from "../figures/queen";
 import { Coordinates } from "./coordinates";
 import {MAX_SIZE} from './game';
 
@@ -22,12 +21,21 @@ export class Board {
         this.position[coord.getX()][coord.getY()] = figure;
     }
 
-    constructor() {
+    constructor(data: any) {
         this.position = [];
-        for (let i = 0; i < MAX_SIZE; i++) {
-            this.position.push(new Array<Checker>(MAX_SIZE));
+        if (!data) {
+            for (let i = 0; i < MAX_SIZE; i++) {
+                this.position.push(new Array<Checker>(MAX_SIZE));
+            }
+            this.fillNormally();
+        } else {
+            for (let i = 0; i < data.length; i++) {
+                this.position.push(new Array<Checker>(MAX_SIZE));
+                for (let j = 0; j < data[0].length; j++) {
+                    this.position[i].push(data[i][j] ? new Checker(data[i][j]) : null);
+                }
+            }
         }
-        this.fillNormally();
     }
 
     public updatePosition(new_position: Checker[][]): void {

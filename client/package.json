@@ -19,6 +19,7 @@
     "redux-thunk": "^2.4.2",
     "socket.io": "^4.5.4",
     "socket.io-client": "^4.5.4",
+    "typedjson": "^1.8.0",
     "typescript": "^4.9.4",
     "web-vitals": "^2.1.4"
   },

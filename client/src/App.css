@@ -39,11 +39,11 @@
 }
 
 .game-name {
-  width: 100vw;
+  width: 40vw;
 }
 
 .user-name {
-  width: 100vw;
+  width: 40vw;
 }
 
 .app {
@@ -87,8 +87,28 @@
   background-color: #5f5fdc;
 }
 
-.black {
+.black-cell {
   background-color: #603c3c;
+}
+
+.white-cell {
+  background-color: #e5d19f;
+}
+
+.black {
+  background-color: #382730;
+}
+
+.white {
+  background-color: #fbf8b9;
+}
+
+.green {
+  background-color: #22b04c;
+}
+
+.red {
+  background-color: #f43d74;
 }
 
 .available {

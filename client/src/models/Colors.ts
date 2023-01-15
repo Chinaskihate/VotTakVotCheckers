@@ -4,3 +4,8 @@ export enum Colors {
     GREEN = 'green',
     RED = 'red',
 }
+
+export enum CellColors {
+    BLACK = 'black-cell',
+    WHITE = 'white-cell'
+}

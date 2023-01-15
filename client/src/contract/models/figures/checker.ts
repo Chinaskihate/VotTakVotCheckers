@@ -6,9 +6,16 @@ export enum Color {
 }
 
 export class Checker {
-    color: Color;
+    color: Color | null;
+    isQueen: boolean;
 
-    constructor(color: Color) {
-        this.color = color;
+    constructor(data?: any, color?: Color, isQueen?: boolean) {
+        if (color) {
+            this.color = color;
+            this.isQueen = isQueen!;
+        } else {
+            this.color = data.color;
+            this.isQueen = data.isQueen;
+        }
     }
 }

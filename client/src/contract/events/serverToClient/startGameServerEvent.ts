@@ -4,11 +4,11 @@ import {EventName} from "../eventName";
 import {User} from "../../models/game_components/user";
 
 export class StartGameServerEvent extends GameEvent {
-    board: Checker[][];
+    board: (Checker | null)[][];
     startColor: Color;
     players: User[];
 
-    constructor(board: Checker[][], startColor: Color, players: User[]) {
+    constructor(board: (Checker | null)[][], startColor: Color, players: User[]) {
         super(EventName.START);
         this.board = board;
         this.startColor = startColor;
