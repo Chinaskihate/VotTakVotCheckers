@@ -1,14 +1,13 @@
-import {GameEvent} from "../gameEvent";
+import {ClientEvent} from "./clientEvent";
 import {Checker, Color} from "../../models/figures/checker";
-import {EventName} from "../eventName";
-import {ClientEvent} from './clientEvent';
 import {User} from "../../models/game_components/user";
+import {EventName} from "../eventName";
 
-export class moveClientEvent extends ClientEvent {
-    board: Checker[][];
+export class MoveClientEvent extends ClientEvent {
+    board: (Checker | null)[][];
     nextMoveColor: Color;
 
-    constructor(board: Checker[][], nextMoveColor: Color, user: User) {
+    constructor(board: (Checker | null)[][], nextMoveColor: Color, user: User) {
         super(user, EventName.MOVE);
         this.board = board;
         this.nextMoveColor = nextMoveColor;

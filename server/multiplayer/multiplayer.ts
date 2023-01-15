@@ -14,4 +14,6 @@ export interface Multiplayer {
     getGame(): Game;
     startGame(): void
     doMove(board: Checker[][]): void;
+
+    abortGame(): void;
 }
