@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import { EndGameServerEvent } from '../contract/events/serverToClient/endGameServerEvent';
 import {StartGameServerEvent} from '../contract/events/serverToClient/startGameServerEvent';
 import { Color } from '../contract/models/figures/checker';
 import { Board } from '../contract/models/game_components/board';
@@ -22,6 +23,7 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
         withdrawMoney,
         bankrupt,
         startGame,
+        endGame,
         setUsername
     } = bindActionCreators(actionCreators, dispatch);
 
@@ -32,6 +34,10 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
         startGame(thisPlayer.getColor()!, new Board(e.board), e.startColor);
         return;
     });
+
+    socketClient.onEnd((e: EndGameServerEvent) => {
+        endGame();
+    })
 
     const register = () => {
         socketClient.register(username);
