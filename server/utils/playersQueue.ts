@@ -23,6 +23,10 @@ export class PlayersQueue {
     }
 
     removeBySocketId(socketId: string): boolean {
+        if (this.players.length == 0) {
+            return false;
+        }
+        this.players.slice(this.players.findIndex(x => x.getSocketId() == socketId), 1);
         return true;
     }
 

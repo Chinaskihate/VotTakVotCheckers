@@ -3,7 +3,8 @@ import {Multiplayer} from "./multiplayer/multiplayer";
 import {MultiplayerImplementation} from "./multiplayer/multiplayerImplementation";
 import {MoveServerEvent} from "./contract/events/serverToClient/moveServerEvent";
 import {EventName} from "./contract/events/eventName";
-import { RegistrationClientEvent } from "./contract/events/clientToServer/registrationClientEvent";
+import {RegistrationClientEvent} from "./contract/events/clientToServer/registrationClientEvent";
+import {EndGameServerEvent, GameResultStatus} from "./contract/events/serverToClient/endGameServerEvent";
 
 const io = new Server(5000,{ });
 const multi4socket = io.of('/multiplayer4')
@@ -32,9 +33,14 @@ multi4socket.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         if (!multiplayer.getAllPlayers().contains(socket.id)) {
-
-        } else {
             multiplayer.getAllPlayers().removeBySocketId(socket.id);
+        } else {
+            io.of('/multiplayer4').to(multiplayer.getGame().getGameId())
+                .emit(EventName.END, new EndGameServerEvent(
+                    multiplayer.getGame().getGameId(),
+                    GameResultStatus.ABORTED,
+                    null
+                ));
         }
     });
 
