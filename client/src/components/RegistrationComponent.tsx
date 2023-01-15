@@ -1,4 +1,4 @@
-import React, {FC, useEffect } from 'react';
+import React, {FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { StartGameServerEvent } from '../contract/events/serverToClient/startGameServerEvent';
@@ -11,18 +11,23 @@ interface RegistrationProps {
 
 const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
     const dispatch = useDispatch();
+    const [username, setUserName] = useState<string>('');
+    const [isRegisterClicked, setRegisterClicked] = useState<boolean>(false);
 
-    const { depositMoney, withdrawMoney, bankrupt } = bindActionCreators(actionCreators, dispatch);
+    const { depositMoney, withdrawMoney, bankrupt, startGame, endGame, setUsername } = bindActionCreators(actionCreators, dispatch);
+
     const amount = useSelector((state: RootState) => state.bank);
 
     socketClient.onStart((e: StartGameServerEvent) => {
-        console.log('123');
         console.log(e);
+        startGame();
         return;
     });
 
-    const register = (amount: number) => {
-        socketClient.register(JSON.stringify(amount));
+    const register = () => {
+        socketClient.register(username);
+        setUsername(username);
+        setRegisterClicked(true);
     }
 
     return (
@@ -31,7 +36,10 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
             <button onClick={() => depositMoney(1000)}>Deposit</button>
             <button onClick={() => withdrawMoney(500)}>Withdraw</button>
             <button onClick={() => bankrupt()}>Bankrupt</button>
-            <button onClick={() => register(amount)}>Register</button>
+            <h1>
+                <input placeholder={'name'} onChange={(event) => setUserName(event.target.value)}/>
+            </h1>
+            <button onClick={() => register()}>Register</button>
         </div>
     );
 };

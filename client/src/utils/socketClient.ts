@@ -9,7 +9,7 @@ export class SocketClient {
 
     constructor() {
         this.socket.onAny((event, ...args) => {
-            console.log(`got ${event}`);
+            console.log(`got ${event}, socket id: ${this.socket.id}`);
         });
         this.socket.on("connect_error", (err) => {
             console.log(`connect_error due to ${err.message}`);

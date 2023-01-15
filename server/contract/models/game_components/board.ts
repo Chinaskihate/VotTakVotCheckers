@@ -1,16 +1,25 @@
 import {Checker, Color} from "../figures/checker";
+import { Queen } from "../figures/queen";
 import { Coordinates } from "./coordinates";
 import {MAX_SIZE} from './game';
 
 export class Board {
-    private position: Checker[][];
+    private position: (Checker | null)[][];
 
-    public getPosition(): Checker[][] {
+    public getPosition(): (Checker | null)[][] {
         return this.position;
+    }
+
+    public getCopy(): Board {
+        return JSON.parse(JSON.stringify(this));
     }
 
     public getCell(coord: Coordinates) {
         return this.position[coord.getX()][coord.getY()];
+    }
+
+    public updateCell(coord: Coordinates, figure: Checker | null) {
+        this.position[coord.getX()][coord.getY()] = figure;
     }
 
     constructor() {
