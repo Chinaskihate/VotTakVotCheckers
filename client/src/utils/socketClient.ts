@@ -7,6 +7,7 @@ import { Board } from "../contract/models/game_components/board";
 import { User } from "../contract/models/game_components/user";
 import { MoveClientEvent } from "../contract/events/clientToServer/moveClientEvent";
 import { Checker, Color } from "../contract/models/figures/checker";
+import {MoveServerEvent} from "../contract/events/serverToClient/moveServerEvent";
 const config = require('../config/config.json');
 
 export class SocketClient {
@@ -45,7 +46,7 @@ export class SocketClient {
         console.log(board[1][3])
         console.log(JSON.stringify(new MoveClientEvent(board, nextMoveColor, this.socket.id)))
         this.socket.emit(EventName.MOVE,
-            JSON.stringify(new MoveClientEvent(board, nextMoveColor, this.socket.id)))
+            JSON.stringify(new MoveClientEvent(board, nextMoveColor, this.socket.id)));
     }
 
     public onStart(callback: (e: StartGameServerEvent) => void) {
@@ -63,6 +64,14 @@ export class SocketClient {
             const data = args[0];
             const event = new EndGameServerEvent(data.gameId, data.status, data.winner);
             callback(event);
-        })
+        });
+    }
+
+    public onMove(callback: (e: MoveServerEvent) => void) {
+        this.socket.on(EventName.MOVE, (...args) => {
+            const data = args[0];
+            const event = new MoveServerEvent(data.board, data.nextMoveColor, data.players);
+            callback(event);
+        });
     }
 }
