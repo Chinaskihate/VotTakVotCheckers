@@ -19,18 +19,21 @@ export class PlayersQueue {
 
     dequeue(): User {
         const item = this.players[this.currCount - 1];
-        this.players.slice(this.currCount - 1, this.currCount);
+        this.players.splice(this.currCount - 1, 1);
         --this.currCount;
         return item;
     }
-
+c
     removeBySocketId(socketId: string): boolean {
         if (this.players.length == 0) {
             return false;
         }
         const idx = this.players.findIndex(x => x.getSocketId() == socketId);
-        this.players.slice(idx, idx + 1);
+        console.log('idx ' + idx);
+        this.players.splice(idx, 1);
+        console.log(this.players.length);
         --this.currCount;
+        console.log('user with socketId = ' + socketId + ' was removed from queue')
         return true;
     }
 
