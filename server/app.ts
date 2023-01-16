@@ -4,8 +4,7 @@ import {MultiplayerImplementation} from "./multiplayer/multiplayerImplementation
 import {MoveServerEvent} from "./contract/events/serverToClient/moveServerEvent";
 import {EventName} from "./contract/events/eventName";
 import {RegistrationClientEvent} from "./contract/events/clientToServer/registrationClientEvent";
-import {MoveClientEvent} from "./contract/events/clientToServer/moveClientEvent";
-import {User} from "./contract/models/game_components/user";
+import {Checker, Color} from "./contract/models/figures/checker";
 
 const io = new Server(5000,{ });
 const multi4socket = io.of('/multiplayer4')
@@ -23,10 +22,18 @@ multi4socket.on('connection', (socket) => {
         }
     });
 
-    socket.on(EventName.MOVE, (moveEvent: MoveClientEvent) => {
+    socket.on(EventName.MOVE, (data) => {
         try {
-            console.log('move handled');
-            multiplayer.doMove(moveEvent.board);
+            interface MyMove {
+                eventName: EventName;
+                board: Checker[][];
+                nextMoveColor: Color;
+            }
+
+            data = JSON.stringify(data).replace(`'`, `"`);
+            let obj: MyMove = JSON.parse(data.toString());
+
+            multiplayer.doMove(obj.board);
             multi4socket.to(multiplayer.getGame().getGameId())
                 .emit(EventName.MOVE, new MoveServerEvent(
                         multiplayer.getGame().getBoard().getPosition(),
@@ -36,7 +43,8 @@ multi4socket.on('connection', (socket) => {
                 );
             console.log('move done');
         } catch (e) {
-            console.log('SERVER ERROR: ' + e.message)
+            throw e;
+            //console.log('SERVER ERROR: ' + e.message)
         }
     });
 
