@@ -1,6 +1,9 @@
+import { Checker } from "../contract/models/figures/checker";
+import { Board } from "../contract/models/game_components/board";
 import {CellUI} from "./CellUI";
-import {CellColors, ColorUI} from "./Colors";
-import { Checker } from "./figures/Checker";
+import {castUIColor, CellColors, ColorUI} from "./Colors";
+import { CheckerUI } from "./figures/CheckerUI";
+import { QueenUI } from "./figures/QueenUI";
 
 export class BoardUI {
     cells: CellUI[][] = []
@@ -19,6 +22,19 @@ export class BoardUI {
         const newBoard = new BoardUI();
         newBoard.cells = this.cells;
         return newBoard;
+    }
+
+    public getPosition(): (Checker | null)[][] {
+        const result = [];
+        for (let i = 0; i < this.getPosition().length; i++) {
+            result.push(new Array<Checker | null>());
+            console.log(result);
+            for (let j = 0; j < this.getPosition()[0].length; j++) {
+                const cell = this.getCell(i, j);
+                result[i].push(cell ? new Checker(castUIColor(cell.figure!.color), cell.figure! instanceof QueenUI) : null);
+            }
+        }
+        return result;
     }
     
     public highlightCells(selectedCell: CellUI | null) {

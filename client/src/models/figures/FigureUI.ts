@@ -8,7 +8,7 @@ export enum FigureNames {
     KING = 'King'
 }
 
-export class Figure {
+export class FigureUI {
     color: ColorUI;
     logo: typeof logo | null;
     cell: CellUI;

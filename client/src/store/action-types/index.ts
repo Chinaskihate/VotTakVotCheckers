@@ -6,6 +6,7 @@ export enum BankActionTypes {
 
 export enum GameActionTypes {
     START = "START_GAME",
+    MOVE = "MOVE_GAME",
     END = "END_GAME"
 }
 

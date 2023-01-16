@@ -1,17 +1,17 @@
 import { BoardUI } from "./BoardUI";
 import { CellColors } from "./Colors";
-import { Figure } from "./figures/Figure";
+import { FigureUI } from "./figures/FigureUI";
 
 export class  CellUI {
     readonly x: number;
     readonly y: number;
     readonly color: CellColors;
-    figure: Figure | null;
+    figure: FigureUI | null;
     board: BoardUI;
     available: boolean;
     id: number;
 
-    constructor(board: BoardUI, x: number, y: number, color: CellColors, figure: Figure | null) {
+    constructor(board: BoardUI, x: number, y: number, color: CellColors, figure: FigureUI | null) {
         this.x = x;
         this.y = y;
         this.color = color;

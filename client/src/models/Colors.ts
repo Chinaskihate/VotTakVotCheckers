@@ -20,6 +20,19 @@ export const castContractColor = (contractColor: Color): ColorUI => {
   }
 };
 
+export const castUIColor = (colorUI: ColorUI): Color => {
+    switch (colorUI) {
+        case ColorUI.GREEN:
+            return Color.GREEN;
+        case ColorUI.RED:
+            return Color.RED;
+        case ColorUI.WHITE:
+            return Color.WHITE;
+        default:
+            return Color.BLACK;
+    }
+}
+
 export const compareColors = (clientColor: ColorUI, contractColor: Color) => {
     if (clientColor === ColorUI.BLACK && contractColor === Color.BLACK) {
         return true;

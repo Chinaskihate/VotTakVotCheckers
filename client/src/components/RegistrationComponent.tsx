@@ -31,7 +31,7 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
 
     socketClient.onStart((e: StartGameServerEvent) => {
         const thisPlayer = (e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]);
-        startGame(thisPlayer.getColor()!, new Board(e.board), e.startColor);
+        startGame(thisPlayer.getColor()!, e.board, e.startColor);
         return;
     });
 

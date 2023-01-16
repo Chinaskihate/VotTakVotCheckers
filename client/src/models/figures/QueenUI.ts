@@ -1,12 +1,12 @@
 import {CellUI} from "../CellUI";
 import {ColorUI} from "../Colors";
-import {Figure, FigureNames} from "./Figure";
+import {FigureUI, FigureNames} from "./FigureUI";
 import blackLogo from '../../assets/checker-black.png';
 import greenLogo from '../../assets/checker-green.png';
 import redLogo from '../../assets/checker-red.png';
 import whiteLogo from '../../assets/checker-white.png';
 
-export class Checker extends Figure {
+export class QueenUI extends FigureUI {
     constructor(color: ColorUI, cell: CellUI) {
         super(color, cell);
         this.logo = color === ColorUI.BLACK
@@ -16,7 +16,7 @@ export class Checker extends Figure {
                 : (color === ColorUI.RED
                     ? redLogo
                     : whiteLogo));
-        this.name = FigureNames.CHECKER;
+        this.name = FigureNames.KING;
     }
 
     canMove(target: CellUI): boolean {
