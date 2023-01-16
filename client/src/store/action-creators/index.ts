@@ -1,9 +1,10 @@
 import { Dispatch } from "redux";
 import {Checker, Color } from "../../contract/models/figures/checker";
 import { Board } from "../../contract/models/game_components/board";
-import { BankActionTypes, GameActionTypes, UsernameActionTypes } from "../action-types";
+import { BankActionTypes, GameActionTypes, ModeActionTypes, UsernameActionTypes } from "../action-types";
 import { BankAction } from "../actions/BankActions";
 import { GameAction } from "../actions/GameAction";
+import { ModeAction } from "../actions/ModeAction";
 import { UsernameAction } from "../actions/UsernameAction";
 
 export const depositMoney = (amount: number) => {
@@ -80,6 +81,22 @@ export const clearUsername = () => {
     return (dispatch: Dispatch<UsernameAction>) => {
         dispatch({
             type: UsernameActionTypes.CLEAR
+        })
+    }
+}
+
+export const startOnline = () => {
+    return (dispatch: Dispatch<ModeAction>) => {
+        dispatch({
+            type: ModeActionTypes.START_ONLINE
+        })
+    }
+}
+
+export const startOffline = () => {
+    return (dispatch: Dispatch<ModeAction>) => {
+        dispatch({
+            type: ModeActionTypes.START_OFFLINE
         })
     }
 }

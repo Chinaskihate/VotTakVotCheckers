@@ -6,6 +6,7 @@ import {RootState} from '../store';
 const HeaderComponent = () => {
     const username = useSelector((state: RootState) => state.username);
     const gameStatus = useSelector((state: RootState) => state.game);
+    const isOnline = useSelector((state: RootState) => state.mode);
 
     return (
         <div>
@@ -13,7 +14,7 @@ const HeaderComponent = () => {
                 <div className="game-name">Checkers</div>
                 <div
                     className="username"
-                    hidden={!gameStatus.gameStarted}
+                    hidden={!(gameStatus.gameStarted && isOnline)}
                 >
                     <div>
                         Username: {username}
@@ -21,7 +22,7 @@ const HeaderComponent = () => {
                 </div>
                 <div
                     className="username"
-                    hidden={!gameStatus.gameStarted}
+                    hidden={!(gameStatus.gameStarted && isOnline)}
                 >
                     <div style={{padding: 20}}>
                         Your Color:

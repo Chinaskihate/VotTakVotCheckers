@@ -32,6 +32,7 @@ export class Board {
 
     public updatePosition(new_position: Checker[][]): void {
         const errMess = 'Invalid board length';
+        console.log(new_position)
         if (new_position.length != MAX_SIZE) {
             throw new Error(errMess);
         }

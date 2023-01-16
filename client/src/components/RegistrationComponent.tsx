@@ -24,7 +24,9 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
         bankrupt,
         startGame,
         endGame,
-        setUsername
+        setUsername,
+        startOffline,
+        startOnline
     } = bindActionCreators(actionCreators, dispatch);
 
     const amount = useSelector((state: RootState) => state.bank);
@@ -45,20 +47,26 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
         setRegisterClicked(true);
     }
 
+    const onStartOffline = () => {
+      socketClient.disconnect();
+      startOffline();
+      startGame(Color.BLACK, new Board(null).getPosition(), Color.BLACK)
+    };
+
     return (
         <div>
             <div className="registration-page">
-                {/*<h1>{amount }</h1>*/}
-                {/*<button onClick={() => depositMoney(1000)}>Deposit</button>*/}
-                {/*<button onClick={() => withdrawMoney(500)}>Withdraw</button>*/}
-                {/*<button onClick={() => bankrupt()}>Bankrupt</button>*/}
                 <div className="registration">
                     <input
                         placeholder={'name'}
                         onChange={(event) => setUserName(event.target.value)}
                         disabled={isRegisterClicked}/>
                     <button onClick={() => register()}
-                            disabled={isRegisterClicked}>Register
+                            disabled={isRegisterClicked}>
+                        Register
+                    </button>
+                    <button onClick={() => onStartOffline()}>
+                        Start offline
                     </button>
                 </div>
                 <div hidden={!isRegisterClicked} className={["wait", !isRegisterClicked ? "wait-hidden" : ""].join(' ')} >{username} Wait..</div>

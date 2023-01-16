@@ -25,6 +25,14 @@ export class SocketClient {
         return this.socket.id;
     }
 
+    public disconnect(): void {
+        this.socket.disconnect();
+    }
+
+    public connect(): void {
+        this.socket.connect();
+    }
+
     public register(name: string) {
         console.log('trying to connect: ' + JSON.stringify(new RegistrationClientEvent(name)));
         this.socket.emit(EventName.REGISTRATION,

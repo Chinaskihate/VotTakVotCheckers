@@ -6,9 +6,6 @@ import { MoveResult } from "./MoveResult";
 
 export class CheckerLogic {
     static getMoveResult(board: Board, from: Coordinates, to: Coordinates): MoveResult {
-        // console.log('from getMoveResult')
-        // console.log('from: ' + from.getX() + ' ' + from.getY())
-        // console.log('to: ' + to.getX() + ' ' + to.getY())
         const checker = board.getCell(from) as Checker;
         const toCell = board.getCell(to);
         if (from.getX() == to.getX() && from.getY() == to.getY()) {

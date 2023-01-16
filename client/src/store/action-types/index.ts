@@ -14,3 +14,8 @@ export enum UsernameActionTypes {
     SET = "SET",
     CLEAR = 'CLEAR'
 }
+
+export enum ModeActionTypes {
+    START_OFFLINE = "START_OFFLINE",
+    START_ONLINE = "START_ONLINE"
+}

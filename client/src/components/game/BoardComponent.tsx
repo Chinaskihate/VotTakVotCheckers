@@ -21,6 +21,7 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
     const dispatch = useDispatch();
     const {moveGame} = bindActionCreators(actionCreators, dispatch);
     const gameStatus = useSelector((state: RootState) => state.game);
+    const isOnline = useSelector((state: RootState) => state.mode);
     const serverPosition = gameStatus.position;
 
     function click(cell: CellUI) {
@@ -29,12 +30,17 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
             console.log('first condition')
             selectedSell.moveFigure(cell);
             setSelectedSell(null);
-            socketClient.move(board.getPosition(), (gameStatus.currentMove! + 1) % 4)
-            //moveGame(gameStatus.playerColor!, board.getPosition(), (gameStatus.currentMove! + 1) % 4)
+            if (isOnline) {
+                socketClient.move(board.getPosition(), (gameStatus.currentMove! + 1) % 4)
+            } else {
+                moveGame(gameStatus.playerColor!, board.getPosition(), (gameStatus.currentMove! + 1) % 4)
+            }
         } else if(selectedSell && selectedSell.x == cell.x && selectedSell.y == cell.y) {
             console.log('second condition')
             setSelectedSell(null)
-        } else if (cell.figure && compareColors(cell!.figure!.color, gameStatus!.playerColor!) && gameStatus!.playerColor === gameStatus!.currentMove) {
+        } else if (cell.figure
+                    && compareColors(cell!.figure!.color, gameStatus!.currentMove!)
+                    && (!isOnline || gameStatus!.playerColor === gameStatus!.currentMove)) {
             console.log('third condition')
             setSelectedSell(cell);
         }
@@ -48,12 +54,12 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
         for (let i = 0; i < serverPosition!.length; i++) {
             for (let j = 0; j < serverPosition![0].length; j++) {
                 const serverCell = serverPosition![i][j];
-                board.cells[j][i] = new CellUI(board, j, i, CellColors.BLACK, null);
+                board.cells[i][j] = new CellUI(board, i, j, CellColors.BLACK, null);
                 if (serverCell) {
                     if (serverCell!.isQueen) {
-                        board.cells[j][i].figure = new QueenUI(castContractColor(serverCell!.color!), board.cells[j][i]);
+                        board.cells[i][j].figure = new QueenUI(castContractColor(serverCell!.color!), board.cells[i][j]);
                     } else {
-                        board.cells[j][i].figure = new CheckerUI(castContractColor(serverCell!.color!), board.cells[j][i]);
+                        board.cells[i][j].figure = new CheckerUI(castContractColor(serverCell!.color!), board.cells[i][j]);
                     }
                 }
             }
