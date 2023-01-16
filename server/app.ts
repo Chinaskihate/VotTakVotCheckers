@@ -23,7 +23,13 @@ multi4socket.on('connection', (socket) => {
     });
 
     socket.on(EventName.MOVE, (data) => {
+        console.log('json data handled');
+        console.log(data);
+        data = JSON.parse(data);
         try {
+            console.log('trying to parse...');
+            console.log(data);
+
             interface MyMove {
                 eventName: EventName;
                 board: Checker[][];
@@ -32,6 +38,8 @@ multi4socket.on('connection', (socket) => {
 
             data = JSON.stringify(data).replace(`'`, `"`);
             let obj: MyMove = JSON.parse(data.toString());
+
+            console.log('parsed');
 
             multiplayer.doMove(obj.board);
             multi4socket.to(multiplayer.getGame().getGameId())
@@ -43,8 +51,7 @@ multi4socket.on('connection', (socket) => {
                 );
             console.log('move done');
         } catch (e) {
-            throw e;
-            //console.log('SERVER ERROR: ' + e.message)
+            console.log('SERVER ERROR: ' + e.message)
         }
     });
 
@@ -67,25 +74,6 @@ multi4socket.on('connection', (socket) => {
 
     // dev only
     socket.on('SHUTDOWN', () => {
-        // multiplayer.getAllPlayers().enqueue(new User('1', '2'));
-        // multiplayer.getAllPlayers().enqueue(new User('2', '3'));
-        // multiplayer.getAllPlayers().enqueue(new User('3', '1'));
-        // console.log('after add');
-        // console.log(multiplayer.getAllPlayers().asArray());
-        //
-        // multiplayer.getAllPlayers().removeBySocketId('1');
-        // console.log('after remove by id');
-        // console.log(multiplayer.getAllPlayers().asArray());
-
-        // multiplayer.getAllPlayers().enqueue(new User('5', '4'));
-        // multiplayer.getAllPlayers().enqueue(new User('5', '4'));
-        // console.log('after add');
-        // console.log(multiplayer.getAllPlayers().asArray());
-        //
-        // console.log(multiplayer.getAllPlayers().dequeue());
-        // console.log(multiplayer.getAllPlayers().dequeue());
-        // console.log('after dequeue');
-        // console.log(multiplayer.getAllPlayers().asArray());
         throw new Error('SHUTDOWN');
     });
 

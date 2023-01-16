@@ -56,7 +56,7 @@ export class Game {
     private checkIsColorLost(color: Color): boolean {
         this.getBoard().getPosition().map(x => {
             x.map(y => {
-                if (y.color == color) {
+                if (y != null && y.color == color) {
                     return false;
                 }
             })
