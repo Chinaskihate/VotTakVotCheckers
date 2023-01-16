@@ -12,7 +12,7 @@ export class BoardUI {
         for (let i = 0; i < 6; i++) {
             const row: CellUI[] = []
             for (let j = 0; j < 6; j++) {
-                row.push(new CellUI(this, j, i, CellColors.BLACK, null)) // black
+                row.push(new CellUI(this, i, j, CellColors.BLACK, null)) // black
             }
             this.cells.push(row);
         }
@@ -26,12 +26,11 @@ export class BoardUI {
 
     public getPosition(): (Checker | null)[][] {
         const result = [];
-        for (let i = 0; i < this.getPosition().length; i++) {
+        for (let i = 0; i < this.cells.length; i++) {
             result.push(new Array<Checker | null>());
-            console.log(result);
-            for (let j = 0; j < this.getPosition()[0].length; j++) {
+            for (let j = 0; j < this.cells[0].length; j++) {
                 const cell = this.getCell(i, j);
-                result[i].push(cell ? new Checker(castUIColor(cell.figure!.color), cell.figure! instanceof QueenUI) : null);
+                result[i].push(cell.figure ? new Checker(castUIColor(cell.figure!.color), cell.figure! instanceof QueenUI) : null);
             }
         }
         return result;
@@ -47,8 +46,8 @@ export class BoardUI {
         }
     }
 
-    public getCell(x: number, y: number) {
-        return this.cells[y][x];
+    public getCell(x: number, y: number): CellUI {
+        return this.cells[x][y];
     }
 
     // public addFigures() {

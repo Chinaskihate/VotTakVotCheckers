@@ -33,6 +33,9 @@ export class SocketClient {
     }
 
     public move(board: (Checker | null)[][], nextMoveColor: Color) {
+        console.log(board[0][3])
+        console.log(board[1][3])
+        console.log(JSON.stringify(new MoveClientEvent(board, nextMoveColor, this.socket.id)))
         this.socket.emit(EventName.MOVE,
             JSON.stringify(new MoveClientEvent(board, nextMoveColor, this.socket.id)))
     }

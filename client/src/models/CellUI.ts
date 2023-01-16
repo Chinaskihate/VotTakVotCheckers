@@ -26,6 +26,7 @@ export class  CellUI {
             this.figure.moveFigure(target);
             target.figure = this.figure;
             this.figure = null;
+            this.board.getCell(this.x, this.y).figure = null;
         }
     }
 }
