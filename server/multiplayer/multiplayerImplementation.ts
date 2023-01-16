@@ -40,11 +40,11 @@ export class MultiplayerImplementation implements Multiplayer {
             let colorPicker: ColorPicker = new ColorPicker();
             players.map((player) => {
                 player.setGameId(gameId);
-                player.setColor(colorPicker.pickRandomColor());
+                player.setColor(colorPicker.pickRandomColorForPlayer());
                 this.io.of('/multiplayer4').sockets.get(player.getSocketId()).join(gameId);
             })
 
-            this.game = new Game(players, 1, new Board(), gameId);
+            this.game = new Game(players, colorPicker.pickRandomColorForFirstMove(), new Board(), gameId);
 
             this.io.of('/multiplayer4').to(gameId).emit(EventName.START, new StartGameServerEvent(
                 this.game.getBoard().getPosition(), this.game.getCurrentMove(), this.getGame().getPlayers())
