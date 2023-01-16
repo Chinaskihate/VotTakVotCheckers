@@ -59,15 +59,15 @@ multi4socket.on('connection', (socket) => {
 
     // dev only
     socket.on('SHUTDOWN', () => {
-        multiplayer.getAllPlayers().enqueue(new User('1', '2'));
-        multiplayer.getAllPlayers().enqueue(new User('2', '3'));
-        multiplayer.getAllPlayers().enqueue(new User('3', '1'));
-        console.log('after add');
-        console.log(multiplayer.getAllPlayers().asArray());
-
-        multiplayer.getAllPlayers().removeBySocketId('1');
-        console.log('after remove by id');
-        console.log(multiplayer.getAllPlayers().asArray());
+        // multiplayer.getAllPlayers().enqueue(new User('1', '2'));
+        // multiplayer.getAllPlayers().enqueue(new User('2', '3'));
+        // multiplayer.getAllPlayers().enqueue(new User('3', '1'));
+        // console.log('after add');
+        // console.log(multiplayer.getAllPlayers().asArray());
+        //
+        // multiplayer.getAllPlayers().removeBySocketId('1');
+        // console.log('after remove by id');
+        // console.log(multiplayer.getAllPlayers().asArray());
 
         // multiplayer.getAllPlayers().enqueue(new User('5', '4'));
         // multiplayer.getAllPlayers().enqueue(new User('5', '4'));
