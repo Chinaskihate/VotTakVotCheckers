@@ -42,6 +42,9 @@ export class BoardUI {
             for (let j = 0; j < row.length; j++) {
                 const target = row[j];
                 target.available = !!selectedCell?.figure?.canMove(target);
+                if(target.available) {
+                    console.log('available: ' + target.x + ' ' + target.y)
+                }
             }
         }
     }

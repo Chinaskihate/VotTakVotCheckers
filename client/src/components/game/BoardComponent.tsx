@@ -24,14 +24,18 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
     const serverPosition = gameStatus.position;
 
     function click(cell: CellUI) {
-        console.log(cell.x + ' ' + cell.y)
+        console.log('click: ' + cell.x + ' ' + cell.y)
         if (selectedSell && selectedSell !== cell && selectedSell.figure?.canMove(cell)) {
+            console.log('first condition')
             selectedSell.moveFigure(cell);
-            console.log('from click')
             setSelectedSell(null);
             socketClient.move(board.getPosition(), (gameStatus.currentMove! + 1) % 4)
             //moveGame(gameStatus.playerColor!, board.getPosition(), (gameStatus.currentMove! + 1) % 4)
+        } else if(selectedSell && selectedSell.x == cell.x && selectedSell.y == cell.y) {
+            console.log('second condition')
+            setSelectedSell(null)
         } else if (cell.figure && compareColors(cell!.figure!.color, gameStatus!.playerColor!) && gameStatus!.playerColor === gameStatus!.currentMove) {
+            console.log('third condition')
             setSelectedSell(cell);
         }
     }

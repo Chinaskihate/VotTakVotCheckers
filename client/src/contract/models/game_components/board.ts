@@ -10,7 +10,7 @@ export class Board {
     }
 
     public getCopy(): Board {
-        return JSON.parse(JSON.stringify(this));
+        return new Board(this.position);
     }
 
     public getCell(coord: Coordinates): Checker | null {
@@ -38,7 +38,7 @@ export class Board {
         }
     }
 
-    public updatePosition(new_position: Checker[][]): void {
+    public updatePosition(new_position: (Checker | null)[][]): void {
         const errMess = 'Invalid board length';
         if (new_position.length != MAX_SIZE) {
             throw new Error(errMess);
