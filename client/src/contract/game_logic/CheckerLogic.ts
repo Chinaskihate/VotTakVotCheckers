@@ -1,10 +1,28 @@
 import {Checker, Color} from "../models/figures/checker";
 import {Board} from "../models/game_components/board";
 import {Coordinates} from "../models/game_components/coordinates";
-import { MoveResult } from "./MoveResult";
+import {MoveResult} from "./MoveResult";
 
 
 export class CheckerLogic {
+    static move(board: Board, from: Coordinates, to: Coordinates): Board {
+        const result = board.getCopy();
+        const cell = board.getCell(from);
+        if (from.getX() == to.getX()) {
+            const cond = from.getY() < to.getY();
+            for (let i = from.getY(); cond ? i < to.getY() : i > to.getY(); cond ? i++ : i--) {
+                result.updateCell(new Coordinates(from.getX(), i), null)
+            }
+        } else if (from.getY() == to.getY()) {
+            const cond = from.getX() < to.getX();
+            for (let i = from.getX(); cond ? i < to.getX() : i > to.getX(); cond ? i++ : i--) {
+                result.updateCell(new Coordinates(i, from.getY()), null)
+            }
+        }
+        result.updateCell(new Coordinates(to.getX(), to.getY()), cell);
+        return result;
+    }
+
     static getMoveResult(board: Board, from: Coordinates, to: Coordinates): MoveResult {
         const checker = board.getCell(from) as Checker;
         const toCell = board.getCell(to);
@@ -62,7 +80,7 @@ export class CheckerLogic {
     private static getWhiteMoveResult(board: Board, from: Coordinates, to: Coordinates): MoveResult {
         if (from.getX() === to.getX()) {
             switch (to.getY() - from.getY()) {
-                case -1:
+                case 1:
                     return MoveResult.MOVE_DONE;
                 case 2:
                 case -2:
@@ -72,7 +90,7 @@ export class CheckerLogic {
             }
         } else if (from.getY() === to.getY()) {
             switch (to.getX() - from.getX()) {
-                case 1:
+                case -1:
                     return MoveResult.MOVE_DONE;
                 case 2:
                 case -2:
@@ -110,9 +128,12 @@ export class CheckerLogic {
     }
 
     private static getGreenMoveResult(board: Board, from: Coordinates, to: Coordinates): MoveResult {
+        console.log('from green move result')
+        console.log(from)
+        console.log(to)
         if (from.getX() === to.getX()) {
             switch (to.getY() - from.getY()) {
-                case 1:
+                case -1:
                     return MoveResult.MOVE_DONE;
                 case 2:
                 case -2:
@@ -122,7 +143,7 @@ export class CheckerLogic {
             }
         } else if (from.getY() === to.getY()) {
             switch (to.getX() - from.getX()) {
-                case -1:
+                case 1:
                     return MoveResult.MOVE_DONE;
                 case 2:
                 case -2:
@@ -144,11 +165,11 @@ export class CheckerLogic {
                 case 2:
                 case -2:
                     const middleCell = board.getCell(new Coordinates(from.getX(), (to.getY() + from.getY()) / 2));
-                    if (from.getX() == 3 && from.getY() == 0) {
+                    if (from.getX() == 1 && from.getY() == 0) {
                         console.log('---------------')
                         console.log(middleCell)
                     }
-                    return middleCell ? middleCell.color === board.getCell(from)!.color : false;
+                    return middleCell ? middleCell.color !== board.getCell(from)!.color : false;
                 default:
                     return false;
             }
