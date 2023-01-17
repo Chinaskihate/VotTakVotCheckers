@@ -42,9 +42,6 @@ export class SocketClient {
     }
 
     public move(board: (Checker | null)[][], nextMoveColor: Color) {
-        console.log(board[0][3])
-        console.log(board[1][3])
-        console.log(JSON.stringify(new MoveClientEvent(board, nextMoveColor, this.socket.id)))
         this.socket.emit(EventName.MOVE,
             JSON.stringify(new MoveClientEvent(board, nextMoveColor, this.socket.id)));
     }
@@ -68,7 +65,6 @@ export class SocketClient {
 
     public onMove(callback: (e: MoveServerEvent) => void) {
         this.socket.on(EventName.MOVE, (args) => {
-            alert('123')
             const data = args;
             const event = new MoveServerEvent(data.board, data.nextMoveColor, data.players);
             callback(event);

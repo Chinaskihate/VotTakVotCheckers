@@ -1,7 +1,7 @@
 import { Checker } from "../contract/models/figures/checker";
 import { Board } from "../contract/models/game_components/board";
 import {CellUI} from "./CellUI";
-import {castUIColor, CellColors, ColorUI} from "./Colors";
+import {castContractColor, castUIColor, CellColors, ColorUI} from "./Colors";
 import { CheckerUI } from "./figures/CheckerUI";
 import { QueenUI } from "./figures/QueenUI";
 
@@ -35,7 +35,37 @@ export class BoardUI {
         }
         return result;
     }
-    
+
+
+
+    public static getBoardUI(position: (Checker | null)[][]): BoardUI {
+        const board = new BoardUI();
+        board.initCells();
+        for (let i = 0; i < position.length; i++) {
+            for (let j = 0; j < position[0].length; j++) {
+                const cell = position[i][j];
+                const cellUI = board.getCell(i, j);
+                cellUI.figure = cell
+                    ? cell!.isQueen
+                        ? new QueenUI(castContractColor(cell!.color!), cellUI)
+                        : new CheckerUI(castContractColor(cell!.color!), cellUI)
+                    : null;
+            }
+        }
+        return board;
+    }
+
+    public getColorCell(figureColor: ColorUI): CellUI {
+        for (let i = 0; i < this.cells.length; i++) {
+            for (let j = 0; j < this.cells[0].length; j++) {
+                if (this.cells[i][j].figure?.color === figureColor) {
+                    return this.cells[i][j];
+                }
+            }
+        }
+        return this.cells[0][0];
+    }
+
     public highlightCells(selectedCell: CellUI | null) {
         for (let i = 0; i < this.cells.length; i++) {
             const row = this.cells[i];

@@ -10,6 +10,8 @@ import {QueenUI} from "../../models/figures/QueenUI";
 import {actionCreators, RootState} from "../../store";
 import CellComponent from "./CellComponent";
 import {socketClient} from "../../App";
+import { MoveServerEvent } from "../../contract/events/serverToClient/moveServerEvent";
+import { Board } from "../../contract/models/game_components/board";
 
 interface BoardProps {
     board: BoardUI;
@@ -18,6 +20,7 @@ interface BoardProps {
 
 const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
     const [selectedSell, setSelectedSell] = useState<CellUI | null>(null);
+    const [foo, setFoo] = useState<boolean>(true);
     const dispatch = useDispatch();
     const {moveGame} = bindActionCreators(actionCreators, dispatch);
     const gameStatus = useSelector((state: RootState) => state.game);
@@ -45,6 +48,11 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
             setSelectedSell(cell);
         }
     }
+
+    socketClient.onMove((e: MoveServerEvent) => {
+        moveGame(gameStatus.playerColor!, e.board, e.nextMoveColor);
+        setBoard(BoardUI.getBoardUI(e.board))
+    });
 
     useEffect(() => {
         highlightCells()
