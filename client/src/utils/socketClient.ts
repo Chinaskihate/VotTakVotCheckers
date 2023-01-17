@@ -67,7 +67,7 @@ export class SocketClient {
     }
 
     public onMove(callback: (e: MoveServerEvent) => void) {
-        this.socket.on("MOVE", (args) => {
+        this.socket.on(EventName.MOVE, (args) => {
             alert('123')
             const data = args;
             const event = new MoveServerEvent(data.board, data.nextMoveColor, data.players);
