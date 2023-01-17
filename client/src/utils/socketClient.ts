@@ -14,8 +14,8 @@ export class SocketClient {
     private socket = io(config["serverUrl"], {transports: ['websocket']});
 
     constructor() {
-        this.socket.onAny((event, ...args) => {
-            console.log(`got ${event}, socket id: ${this.socket.id}`);
+        this.socket.onAny((event, args) => {
+            console.log(`got ${event}, socket id: ${this.socket.id}, args: ${args.eventName}`);
         });
         this.socket.on("connect_error", (err) => {
             console.log(`connect_error due to ${err.message}`);
@@ -51,7 +51,6 @@ export class SocketClient {
 
     public onStart(callback: (e: StartGameServerEvent) => void) {
         this.socket.on(EventName.START, (args) => {
-            console.log(args.board);
             const users = args.players.map((p: any) => new User(p))
             const board = new Board(args.board);
             const event = new StartGameServerEvent(args.board, args.startColor, users);
@@ -68,8 +67,9 @@ export class SocketClient {
     }
 
     public onMove(callback: (e: MoveServerEvent) => void) {
-        this.socket.on(EventName.MOVE, (...args) => {
-            const data = args[0];
+        this.socket.on("MOVE", (args) => {
+            alert('123')
+            const data = args;
             const event = new MoveServerEvent(data.board, data.nextMoveColor, data.players);
             callback(event);
         });

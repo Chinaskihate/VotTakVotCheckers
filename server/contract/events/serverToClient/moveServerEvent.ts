@@ -9,7 +9,7 @@ export class MoveServerEvent extends GameEvent {
     players: User[];
 
     constructor(board: Checker[][], nextMoveColor: Color, players: User[]) {
-        super(EventName.START);
+        super(EventName.MOVE);
         this.board = board;
         this.nextMoveColor = nextMoveColor;
         this.players = players;
