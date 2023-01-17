@@ -1,6 +1,7 @@
 import { ColorUI } from "../Colors";
 import logo from '../../assets/checker-black.png';
 import { CellUI } from "../CellUI";
+import { MoveResult } from "../../contract/game_logic/MoveResult";
 
 export enum FigureNames {
     FIGURE = 'Figure',
@@ -24,11 +25,8 @@ export class FigureUI {
         this.id = Math.random();
     }
 
-    canMove(target: CellUI) : boolean {
-        if(target.figure?.color == this.color) {
-            return false;
-        }
-        return true;
+    canMove(target: CellUI) : MoveResult {
+        return MoveResult.ABORTED;
     }
 
     moveFigure(target: CellUI) {}

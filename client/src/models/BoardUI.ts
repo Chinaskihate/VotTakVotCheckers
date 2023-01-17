@@ -1,3 +1,4 @@
+import { MoveResult } from "../contract/game_logic/MoveResult";
 import { Checker } from "../contract/models/figures/checker";
 import { Board } from "../contract/models/game_components/board";
 import {CellUI} from "./CellUI";
@@ -36,7 +37,19 @@ export class BoardUI {
         return result;
     }
 
-
+    public updatePosition(position: (Checker | null)[][]): void{
+        for (let i = 0; i < position.length; i++) {
+            for (let j = 0; j < position[0].length; j++) {
+                const cell = position[i][j];
+                const cellUI = this.getCell(i, j);
+                cellUI.figure = cell
+                    ? cell!.isQueen
+                        ? new QueenUI(castContractColor(cell!.color!), cellUI)
+                        : new CheckerUI(castContractColor(cell!.color!), cellUI)
+                    : null;
+            }
+        }
+    }
 
     public static getBoardUI(position: (Checker | null)[][]): BoardUI {
         const board = new BoardUI();
@@ -71,7 +84,7 @@ export class BoardUI {
             const row = this.cells[i];
             for (let j = 0; j < row.length; j++) {
                 const target = row[j];
-                target.available = !!selectedCell?.figure?.canMove(target);
+                target.available = selectedCell ? selectedCell?.figure?.canMove(target) != MoveResult.ABORTED : false;
                 if(target.available) {
                     console.log('available: ' + target.x + ' ' + target.y)
                 }

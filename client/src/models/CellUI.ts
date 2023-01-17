@@ -23,6 +23,11 @@ export class  CellUI {
 
     moveFigure(target: CellUI) {
         if(this.figure && this.figure?.canMove(target)) {
+            if (Math.abs(this.x - target.x) == 2) {
+                this.board.getCell((this.x + target.x) / 2, this.y).figure = null;
+            } else if (Math.abs(this.y - target.y) == 2) {
+                this.board.getCell(this.x, (this.y + target.y) / 2).figure = null;
+            }
             this.figure.moveFigure(target);
             target.figure = this.figure;
             this.figure = null;

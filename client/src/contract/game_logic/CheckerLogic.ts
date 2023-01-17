@@ -27,7 +27,7 @@ export class CheckerLogic {
         const checker = board.getCell(from) as Checker;
         const toCell = board.getCell(to);
         if (from.getX() == to.getX() && from.getY() == to.getY()) {
-            return MoveResult.MOVE_DONE;
+            return MoveResult.ABORTED;
         }
         if (!checker || toCell || checker.isQueen) {
             return MoveResult.ABORTED;
@@ -169,7 +169,7 @@ export class CheckerLogic {
                         console.log('---------------')
                         console.log(middleCell)
                     }
-                    return middleCell ? middleCell.color !== board.getCell(from)!.color : false;
+                    return middleCell ? middleCell.color !== board.getCell(from)?.color : false;
                 default:
                     return false;
             }
@@ -178,7 +178,7 @@ export class CheckerLogic {
                 case 2:
                 case -2:
                     const middleCell = board.getCell(new Coordinates((from.getX() + to.getX()) / 2, from.getY()));
-                    return middleCell ? middleCell.color === board.getCell(from)!.color : false;
+                    return middleCell ? middleCell.color !== board.getCell(from)?.color : false;
                 default:
                     return false;
             }
@@ -213,9 +213,15 @@ export class CheckerLogic {
             }
         } else {
             condition = this.canEat(board, from, new Coordinates(from.getX() + 2, from.getY()))
-                || this.canEat(board, from, new Coordinates(from.getX() - 2, from.getY()))
-                || this.canEat(board, from, new Coordinates(from.getX(), from.getY() + 2))
-                || this.canEat(board, from, new Coordinates(from.getX(), from.getY() - 2));
+                || this.canEat(board, from, new Coordinates(from.getX() - 2, from.getY()));
+            if (from.getY() - 2 < 0) {
+                condition ||= this.canEat(board, from, new Coordinates(from.getX(), from.getY() + 2))
+            } else if (from.getY() + 2 > maxY) {
+                condition ||= this.canEat(board, from, new Coordinates(from.getX(), from.getY() - 2))
+            } else {
+                condition ||= this.canEat(board, from, new Coordinates(from.getX(), from.getY() + 2))
+                    || this.canEat(board, from, new Coordinates(from.getX(), from.getY() - 2))
+            }
         }
         return condition;
     }

@@ -10,8 +10,9 @@ import {QueenUI} from "../../models/figures/QueenUI";
 import {actionCreators, RootState} from "../../store";
 import CellComponent from "./CellComponent";
 import {socketClient} from "../../App";
-import { MoveServerEvent } from "../../contract/events/serverToClient/moveServerEvent";
-import { Board } from "../../contract/models/game_components/board";
+import {MoveServerEvent} from "../../contract/events/serverToClient/moveServerEvent";
+import {Board} from "../../contract/models/game_components/board";
+import {MoveResult} from "../../contract/game_logic/MoveResult";
 
 interface BoardProps {
     board: BoardUI;
@@ -29,30 +30,47 @@ const BoardComponent: FC<BoardProps> = ({board, setBoard}) => {
 
     function click(cell: CellUI) {
         console.log('click: ' + cell.x + ' ' + cell.y)
-        if (selectedSell && selectedSell !== cell && selectedSell.figure?.canMove(cell)) {
+        if (selectedSell && selectedSell !== cell && selectedSell.figure?.canMove(cell) != MoveResult.ABORTED) {
             console.log('first condition')
+            console.log(selectedSell)
+            console.log(cell)
+            console.log(selectedSell != cell)
+            console.log(selectedSell.figure?.canMove(cell))
+            const canMoveAgain = selectedSell.figure?.canMove(cell) == MoveResult.MOVE_AGAIN;
             selectedSell.moveFigure(cell);
             setSelectedSell(null);
-            if (isOnline) {
-                socketClient.move(board.getPosition(), (gameStatus.currentMove! + 1) % 4)
+            console.log(canMoveAgain)
+            if (!canMoveAgain) {
+                if (isOnline) {
+                    socketClient.move(board.getPosition(), (gameStatus.currentMove! + 1) % 4)
+                } else {
+                    moveGame(gameStatus.playerColor!, board.getPosition(), (gameStatus.currentMove! + 1) % 4)
+                }
             } else {
-                moveGame(gameStatus.playerColor!, board.getPosition(), (gameStatus.currentMove! + 1) % 4)
+                if (isOnline) {
+                    socketClient.move(board.getPosition(), gameStatus.currentMove!)
+                } else {
+                    moveGame(gameStatus.playerColor!, board.getPosition(), gameStatus.currentMove!)
+                }
             }
-        } else if(selectedSell && selectedSell.x == cell.x && selectedSell.y == cell.y) {
+        } else if (selectedSell && selectedSell.x == cell.x && selectedSell.y == cell.y) {
             console.log('second condition')
             setSelectedSell(null)
         } else if (cell.figure
-                    && compareColors(cell!.figure!.color, gameStatus!.currentMove!)
-                    && (!isOnline || gameStatus!.playerColor === gameStatus!.currentMove)) {
+            && compareColors(cell!.figure!.color, gameStatus!.currentMove!)
+            && (!isOnline || gameStatus!.playerColor === gameStatus!.currentMove)) {
             console.log('third condition')
+            console.log(cell)
             setSelectedSell(cell);
         }
     }
 
-    socketClient.onMove((e: MoveServerEvent) => {
-        moveGame(gameStatus.playerColor!, e.board, e.nextMoveColor);
-        setBoard(BoardUI.getBoardUI(e.board))
-    });
+    if (isOnline) {
+        socketClient.onMove((e: MoveServerEvent) => {
+            moveGame(gameStatus.playerColor!, e.board, e.nextMoveColor);
+            setBoard(BoardUI.getBoardUI(e.board))
+        });
+    }
 
     useEffect(() => {
         highlightCells()

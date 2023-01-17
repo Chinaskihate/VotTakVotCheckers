@@ -23,22 +23,12 @@ export class CheckerUI extends FigureUI {
         this.name = FigureNames.CHECKER;
     }
 
-    canMove(target: CellUI): boolean {
-        if (!super.canMove(target)) {
-            return false;
-        }
+    canMove(target: CellUI): MoveResult {
         const position = this.cell.board.getPosition();
         const board = new Board(position);
-        const moveResult = CheckerLogic.getMoveResult(
+        return  CheckerLogic.getMoveResult(
             board,
             new Coordinates(this.cell.x, this.cell.y),
             new Coordinates(target.x, target.y));
-        switch (moveResult) {
-            case MoveResult.ABORTED:
-                return false;
-            default:
-                console.log('moveResult: ' + moveResult)
-                return true;
-        }
     }
 }
