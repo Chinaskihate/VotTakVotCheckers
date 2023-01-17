@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "./App.css"
+import BoardComponent from "./components/game/BoardComponent";
+import HeaderComponent from "./components/HeaderComponent";
+import RegistrationComponent from "./components/RegistrationComponent";
+import {BoardUI} from "./models/BoardUI";
+import { RootState } from "./store";
+import {SocketClient} from "./utils/socketClient";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export const socketClient = new SocketClient();
+
+const App = () => {
+    const dispatch = useDispatch();
+    const gameStatus = useSelector((state: RootState) => state.game);
+    const [board, setBoard] = useState(new BoardUI());
+
+    useEffect(() => {
+        restart();
+    }, []);
+
+    function restart() {
+        const newBoard = new BoardUI();
+        newBoard.initCells();
+        setBoard(newBoard);
+    }
+
+    return (
+        <div>
+            <HeaderComponent/>
+            <div className="app">
+                {gameStatus.gameStarted
+                    ? <BoardComponent
+                        board={board}
+                        setBoard={setBoard}/>
+                    : <RegistrationComponent
+                        socketClient={socketClient}/>}
+            </div>
+        </div>
+    );
+};
 
 export default App;

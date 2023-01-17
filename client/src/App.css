@@ -1,38 +1,119 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header {
+  width: 100vw;
+  height: 10vh;
   display: flex;
-  flex-direction: column;
+  background-color: grey;
+  justify-content: center;
+  align-items: center;
+}
+
+.registration-page {
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+}
+
+.registration {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wait {
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wait-hidden {
+  visibility: hidden;
+}
+
+.game-name {
+  width: 40vw;
+}
+
+.user-name {
+  width: 40vw;
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  width: calc(90px * 6);
+  height: calc(90px * 6);
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: #e7d2a1;
 }
 
-.App-link {
-  color: #61dafb;
+.cell {
+  width: 64px;
+  height: 64px;
+  margin: 13px;
+  display: flex;
+  justify-content: center;
+  transform: rotate(45deg);
+  align-items: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.cell img {
+  width: 48px;
+  position: relative;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.selected {
+  background-color: #5f5fdc;
+}
+
+.black-cell {
+  background-color: #603c3c;
+}
+
+.white-cell {
+  background-color: #e5d19f;
+}
+
+.black {
+  background-color: #382730;
+}
+
+.white {
+  background-color: #fbf8b9;
+}
+
+.green {
+  background-color: #22b04c;
+}
+
+.red {
+  background-color: #f43d74;
+}
+
+.available {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background-color: #4f0d98;
 }
