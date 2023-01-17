@@ -19,17 +19,12 @@ const RegistrationComponent: FC<RegistrationProps> = ({socketClient}) => {
     const [isRegisterClicked, setRegisterClicked] = useState<boolean>(false);
 
     const {
-        depositMoney,
-        withdrawMoney,
-        bankrupt,
         startGame,
         endGame,
         setUsername,
         startOffline,
         startOnline
     } = bindActionCreators(actionCreators, dispatch);
-
-    const amount = useSelector((state: RootState) => state.bank);
 
     socketClient.onStart((e: StartGameServerEvent) => {
         const thisPlayer = (e.players.filter(p => p.getSocketId() == socketClient.getSocketId())[0]);

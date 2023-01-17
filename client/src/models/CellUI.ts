@@ -1,5 +1,5 @@
 import { BoardUI } from "./BoardUI";
-import { CellColors } from "./Colors";
+import { CellColors, ColorUI } from "./Colors";
 import { FigureUI } from "./figures/FigureUI";
 
 export class  CellUI {

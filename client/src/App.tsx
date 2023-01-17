@@ -22,7 +22,6 @@ const App = () => {
     function restart() {
         const newBoard = new BoardUI();
         newBoard.initCells();
-        //newBoard.addFigures();
         setBoard(newBoard);
     }
 

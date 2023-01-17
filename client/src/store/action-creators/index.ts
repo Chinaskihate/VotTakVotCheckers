@@ -1,38 +1,10 @@
 import { Dispatch } from "redux";
 import {Checker, Color } from "../../contract/models/figures/checker";
 import { Board } from "../../contract/models/game_components/board";
-import { BankActionTypes, GameActionTypes, ModeActionTypes, UsernameActionTypes } from "../action-types";
-import { BankAction } from "../actions/BankActions";
+import { GameActionTypes, ModeActionTypes, UsernameActionTypes } from "../action-types";
 import { GameAction } from "../actions/GameAction";
 import { ModeAction } from "../actions/ModeAction";
 import { UsernameAction } from "../actions/UsernameAction";
-
-export const depositMoney = (amount: number) => {
-    return (dispatch: Dispatch<BankAction>) => {
-        dispatch({
-            type: BankActionTypes.DEPOSIT,
-            payload: amount
-        })
-    }
-}
-
-
-export const withdrawMoney = (amount: number) => {
-    return (dispatch: Dispatch<BankAction>) => {
-        dispatch({
-            type: BankActionTypes.WITHDRAW,
-            payload: amount
-        })
-    }
-}
-
-export const bankrupt = () => {
-    return (dispatch: Dispatch<BankAction>) => {
-        dispatch({
-            type: BankActionTypes.BANKRUPT
-        })
-    }
-}
 
 export const startGame = (playerColor: Color, position: (Checker | null)[][], currentMove: Color) => {
     return (dispatch: Dispatch<GameAction>) => {

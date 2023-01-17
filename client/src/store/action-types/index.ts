@@ -1,9 +1,3 @@
-export enum BankActionTypes {
-    DEPOSIT = "DEPOSIT",
-    WITHDRAW = "WITHDRAW",
-    BANKRUPT = "BANKRUPT"
-}
-
 export enum GameActionTypes {
     START = "START_GAME",
     MOVE = "MOVE_GAME",
